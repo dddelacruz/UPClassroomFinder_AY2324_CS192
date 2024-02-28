@@ -12,8 +12,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'UP CLASSROOM FINDER',
       theme: ThemeData(
-        primaryColor: Color(0xFF8C0000), // Custom primary color
-        // Define a custom MaterialColor for primarySwatch to use maroon shades
+        primaryColor: Color(0xFF8C0000), //Maroon
+      
         primarySwatch: MaterialColor(
           0xFF8C0000,
           <int, Color>{
@@ -67,9 +67,9 @@ class MapScreen extends StatelessWidget {
                 child: const TextField(
                   decoration: InputDecoration(
                     hintText: 'Search here',
-                    icon: Icon(Icons.search, color: Colors.white), // Adjust icon color if needed
+                    icon: Icon(Icons.search, color: Colors.white),
                     border: InputBorder.none,
-                    hintStyle: TextStyle(color: Colors.white), // Adjust text color if needed
+                    hintStyle: TextStyle(color: Colors.white), 
                   ),
                 ),
               ),
@@ -81,10 +81,10 @@ class MapScreen extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: BottomAppBar(
-              color: Color(0xFF8C0000), // Apply maroon color to BottomAppBar
+              color: Color(0xFF8C0000), // BottomAppBar
               shape: const CircularNotchedRectangle(),
               child: IconTheme(
-                data: IconThemeData(color: Colors.white), // Adjust icon color to contrast with maroon
+                data: IconThemeData(color: Colors.white), // icon color 
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
