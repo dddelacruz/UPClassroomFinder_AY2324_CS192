@@ -7,119 +7,97 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'UP CLASSROOM FINDER',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primaryColor: Color(0xFF8C0000), // Custom primary color
+        // Define a custom MaterialColor for primarySwatch to use maroon shades
+        primarySwatch: MaterialColor(
+          0xFF8C0000,
+          <int, Color>{
+            50: Color(0xFFF8E0E0),
+            100: Color(0xFFF1C1C1),
+            200: Color(0xFFE9A1A1),
+            300: Color(0xFFE28282),
+            400: Color(0xFFDB6262),
+            500: Color(0xFFD44242),
+            600: Color(0xFF8C0000),
+            700: Color(0xFF8C0000),
+            800: Color(0xFF8C0000),
+            900: Color(0xFF8C0000),
+          },
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MapScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class MapScreen extends StatelessWidget {
+  const MapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Stack(
+        children: <Widget>[
+          // Map image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/map.jpg',
+              fit: BoxFit.cover,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          // Search bar
+          Positioned(
+            top: MediaQuery.of(context).padding.top,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  color: Color(0xFF8C0000), // Maroon color for the search bar
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: const TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search here',
+                    icon: Icon(Icons.search, color: Colors.white), // Adjust icon color if needed
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.white), // Adjust text color if needed
+                  ),
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+          // Bottom navigation bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: BottomAppBar(
+              color: Color(0xFF8C0000), // Apply maroon color to BottomAppBar
+              shape: const CircularNotchedRectangle(),
+              child: IconTheme(
+                data: IconThemeData(color: Colors.white), // Adjust icon color to contrast with maroon
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+                    IconButton(icon: const Icon(Icons.schedule), onPressed: () {}),
+                    IconButton(icon: const Icon(Icons.bookmark), onPressed: () {}),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
