@@ -9,35 +9,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'UP CLASSROOM FINDER',
-      theme: ThemeData(
-        primaryColor: Color(0xFF8C0000), //Maroon
-      
-        primarySwatch: MaterialColor(
-          0xFF8C0000,
-          <int, Color>{
-            50: Color(0xFFF8E0E0),
-            100: Color(0xFFF1C1C1),
-            200: Color(0xFFE9A1A1),
-            300: Color(0xFFE28282),
-            400: Color(0xFFDB6262),
-            500: Color(0xFFD44242),
-            600: Color(0xFF8C0000),
-            700: Color(0xFF8C0000),
-            800: Color(0xFF8C0000),
-            900: Color(0xFF8C0000),
-          },
+    return 
+      MaterialApp(
+        title: 'UP CLASSROOM FINDER',
+        theme: ThemeData(
+          primaryColor: Color(0xFF8C0000), //Maroon
+        
+          primarySwatch: MaterialColor(
+            0xFF8C0000,
+            <int, Color>{
+              50: Color(0xFFF8E0E0),
+              100: Color(0xFFF1C1C1),
+              200: Color(0xFFE9A1A1),
+              300: Color(0xFFE28282),
+              400: Color(0xFFDB6262),
+              500: Color(0xFFD44242),
+              600: Color(0xFF8C0000),
+              700: Color(0xFF8C0000),
+              800: Color(0xFF8C0000),
+              900: Color(0xFF8C0000),
+            },
+          ),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const MapScreen(),
+        home: const MapPage(),
     );
   }
 }
 
-class MapScreen extends StatelessWidget {
-  const MapScreen({super.key});
+
+class MapPage extends StatelessWidget {
+  const MapPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +92,93 @@ class MapScreen extends StatelessWidget {
                   children: <Widget>[
                     IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
                     IconButton(icon: const Icon(Icons.schedule), onPressed: () {}),
-                    IconButton(icon: const Icon(Icons.bookmark), onPressed: () {}),
+                    IconButton(icon: const Icon(Icons.bookmark), onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const BookmarksPage()),
+                      );
+                    }),
                   ],
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BookmarksPage extends StatelessWidget{
+  const BookmarksPage({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              color: const Color(0xff264B30),
+              child: const Padding(
+                padding:  const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.bookmark, 
+                      color: Color(0xff800000),
+                      size: 35,
+                      ),
+                    SizedBox(width: 7),
+                    Text(
+                      "Bookmarks",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, top: 10),
+                child: ListView(
+                  children: [
+                      ListTile(
+                        leading: const Icon(Icons.arrow_drop_down),
+                        title: Text("AECH"),
+                        visualDensity:  const VisualDensity(horizontal: 0, vertical: -4),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children:[
+                  TextButton(
+                    child: Text("Back"),
+                    onPressed: (){
+                        Navigator.pop(context);
+                      },
+                    ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  TextButton(
+                    onPressed: (){},
+                    child: Text("Delete"),
+                    ),
+                ]
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
