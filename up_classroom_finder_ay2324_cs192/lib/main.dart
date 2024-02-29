@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,33 +11,41 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-      MaterialApp(
-        title: 'UP CLASSROOM FINDER',
-        theme: ThemeData(
-          primaryColor: Color(0xFF8C0000), //Maroon
-        
-          primarySwatch: MaterialColor(
-            0xFF8C0000,
-            <int, Color>{
-              50: Color(0xFFF8E0E0),
-              100: Color(0xFFF1C1C1),
-              200: Color(0xFFE9A1A1),
-              300: Color(0xFFE28282),
-              400: Color(0xFFDB6262),
-              500: Color(0xFFD44242),
-              600: Color(0xFF8C0000),
-              700: Color(0xFF8C0000),
-              800: Color(0xFF8C0000),
-              900: Color(0xFF8C0000),
-            },
+      ChangeNotifierProvider(
+        create: (context) => MyAppState(),
+        child: MaterialApp(
+          title: 'UP CLASSROOM FINDER',
+          theme: ThemeData(
+            primaryColor: Color(0xFF8C0000), //Maroon
+          
+            primarySwatch: MaterialColor(
+              0xFF8C0000,
+              <int, Color>{
+                50: Color(0xFFF8E0E0),
+                100: Color(0xFFF1C1C1),
+                200: Color(0xFFE9A1A1),
+                300: Color(0xFFE28282),
+                400: Color(0xFFDB6262),
+                500: Color(0xFFD44242),
+                600: Color(0xFF8C0000),
+                700: Color(0xFF8C0000),
+                800: Color(0xFF8C0000),
+                900: Color(0xFF8C0000),
+              },
+            ),
+            visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: const MapPage(),
-    );
+          home: const MapPage(),
+            ),
+      );
   }
 }
 
+class MyAppState extends ChangeNotifier {
+  // Initialize list for notes
+  List<String> notes = [];
+
+}
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
@@ -164,9 +173,9 @@ class BookmarksPage extends StatelessWidget{
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(16),
                                           color: Colors.white),
-                                      child: const Column(
+                                      child: Column(
                                         children: [
-                                          Padding(
+                                          const Padding(
                                             padding: EdgeInsets.only(bottom: 16),
                                             child: Row(
                                                 mainAxisAlignment:
@@ -185,7 +194,7 @@ class BookmarksPage extends StatelessWidget{
                                                   )
                                                 ]),
                                           ), // heading and bookmark row
-                                          Padding(
+                                          const Padding(
                                             padding: EdgeInsets.only(bottom: 8),
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -206,8 +215,8 @@ class BookmarksPage extends StatelessWidget{
                                               ],
                                             ),
                                           ), // floorplan image row
-                                          Divider(),
-                                          Padding(
+                                          const Divider(),
+                                          const Padding(
                                             padding: EdgeInsets.only(top: 8, bottom: 8),
                                             child: Row(
                                               children: [
@@ -237,7 +246,7 @@ class BookmarksPage extends StatelessWidget{
                                               ],
                                             ),
                                           ), // address row
-                                          Padding(
+                                          const Padding(
                                             padding: EdgeInsets.only(bottom: 8),
                                             child: Row(
                                               children: [
@@ -265,7 +274,7 @@ class BookmarksPage extends StatelessWidget{
                                               ],
                                             ),
                                           ), // hours row
-                                          Padding(
+                                          const Padding(
                                             padding: EdgeInsets.only(bottom: 8),
                                             child: Row(
                                               children: [
@@ -295,7 +304,16 @@ class BookmarksPage extends StatelessWidget{
                                               ],
                                             ),
                                           ), // transportation row
-                                          Divider(),
+                                          const Divider(),
+                                          TextButton(
+                                            onPressed: (){
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => NotesPage()),
+                                              );
+                                            },
+                                            child: const Text("Notes"),
+                                          ),
                                         ],
                                       ))
                                 ],
@@ -334,3 +352,72 @@ class BookmarksPage extends StatelessWidget{
     );
   }
 }
+
+// *** Notes page widget ***
+class NotesPage extends StatefulWidget {
+  @override
+  _NotesPage createState() => _NotesPage();
+}
+// *** Notes page widget ***
+
+// *** Notes page state ***
+class _NotesPage extends State<NotesPage> {
+  @override
+  
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Notes',
+                  style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xff264B30),
+      ),
+      body: ListView.builder(
+        itemCount: appState.notes.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(appState.notes[index]),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                setState(() {
+                  appState.notes.removeAt(index);
+                });
+              },
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addNote(appState);
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  void addNote(appState) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add Note'),
+          content: TextField(
+            autofocus: true,
+            onSubmitted: (value) {
+              setState(() {
+                appState.notes.add(value);
+              });
+              Navigator.pop(context); // Close the dialog
+            },
+            decoration: InputDecoration(
+              hintText: 'Enter your note',
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+// *** Notes page state ***
