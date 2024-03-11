@@ -101,7 +101,12 @@ class MapPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+                    IconButton(icon: const Icon(Icons.edit), onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NotesPage()),
+                        );
+                    }),
                     IconButton(icon: const Icon(Icons.schedule), onPressed: () {
                       Navigator.push(
                         context,
@@ -468,13 +473,13 @@ class SchedulePage extends StatelessWidget{
                               children: <Widget>[
                                 TableCell(
                                   child: Container(
-                                    child: Center(child: Text("time", textAlign: TextAlign.center,)),
+                                    child: Center(child: Text("7:00-9:00", textAlign: TextAlign.center,)),
                                     height: 35
                                     )
                                 ),
                                 TableCell(
                                   child: Container(
-                                    child: Center(child: Text("subject", textAlign: TextAlign.center,)),
+                                    child: Center(child: Text("CS191", textAlign: TextAlign.center,)),
                                     height: 35
                                     )
                                 ),
@@ -482,17 +487,80 @@ class SchedulePage extends StatelessWidget{
                                   child: Container(
                                     child: Center(child: 
                                       TextButton(
-                                        child: Text("location", textAlign: TextAlign.center, 
+                                        child: Text("AECH", textAlign: TextAlign.center, 
                                         style: TextStyle(color: Color(0xff800000))),
-                                        onPressed: (
-                                        ){},
+                                        onPressed: (){
+                                          showModalBottomSheet<void>(
+                                            context: context,
+                                            builder: (BuildContext context) => const FloorPlanPage(),
+                                          );
+                                        },
                                         )
                                       ),
                                     height: 35
                                     )
                                 ),
                               ]
-                          )],
+                          ),
+                          TableRow(
+                              children: <Widget>[
+                                TableCell(
+                                  child: Container(
+                                    child: Center(child: Text("10:30-11:30", textAlign: TextAlign.center,)),
+                                    height: 35
+                                    )
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    child: Center(child: Text("CWTS", textAlign: TextAlign.center,)),
+                                    height: 35
+                                    )
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    child: Center(child: 
+                                      TextButton(
+                                        child: Text("Palma Hall", textAlign: TextAlign.center, 
+                                        style: TextStyle(color: Color(0xff800000))),
+                                        onPressed: (){
+                                        },
+                                        )
+                                      ),
+                                    height: 35
+                                    )
+                                ),
+                              ]
+                          ),
+                          TableRow(
+                              children: <Widget>[
+                                TableCell(
+                                  child: Container(
+                                    child: Center(child: Text("16:00-17:00", textAlign: TextAlign.center,)),
+                                    height: 35
+                                    )
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    child: Center(child: Text("Nihonggo", textAlign: TextAlign.center,)),
+                                    height: 35
+                                    )
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    child: Center(child: 
+                                      TextButton(
+                                        child: Text("Melchor Hall", textAlign: TextAlign.center, 
+                                        style: TextStyle(color: Color(0xff800000))),
+                                        onPressed: (){
+                                        },
+                                        )
+                                      ),
+                                    height: 35
+                                    )
+                                ),
+                              ]
+                          ),
+                          ],
                         ),
                       ),
                   ],
