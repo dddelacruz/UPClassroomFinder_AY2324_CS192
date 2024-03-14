@@ -30,7 +30,6 @@ void main() {
 
       // Verify working search bar functionality
       await tester.enterText(find.byType(TextField), 'hi');
-      // Continue after search functionality is complete
 
       // Verify working Bookmark button
       final buttonFinder = find.byIcon(Icons.bookmark);
@@ -76,13 +75,13 @@ void main() {
       }
       expect(find.byWidgetPredicate(isBackTextButton), findsOneWidget);
 
-      await tester.press(find.byWidgetPredicate(isBackTextButton));
+      await tester.press(find.byWidgetPredicate(isBackTextButton), warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(find.byType(MyApp), findsOneWidget);
     });
   });
 
-  group('Floorplan UI Tests', () {
+  group('FloorPlanPage Tests', () {
     testWidgets('Floorplan UI Test', (WidgetTester tester) async {
 
       // Build Floorplan widget
@@ -111,6 +110,74 @@ void main() {
       await tester.tap(notesbuttonFinder);
       await tester.pumpAndSettle();
       expect(find.byType(NotesPage), findsOneWidget);
+    });
+  });
+
+  group('NotesPage Tests', () { 
+    testWidgets('Floorplan UI Test', (WidgetTester tester) async {
+
+      // Build Notes widget
+      await tester.pumpWidget(const MyApp());
+
+      final buttonFinder = find.byIcon(Icons.edit);
+      await tester.tap(buttonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(NotesPage), findsOneWidget);
+    
+      final addbuttonFinder = find.byType(FloatingActionButton);
+      final deletebuttonFinder = find.byType(IconButton);
+      
+      // Verify proper loading of Notes buttons
+      expect(addbuttonFinder, findsOneWidget);
+
+      // Test adding notes
+      await tester.tap(addbuttonFinder, warnIfMissed: false);
+      await tester.pump();
+      await tester.enterText(find.byType(TextField), 'hello world!');
+      await tester.pump();
+      expect(find.text('hello world!'), findsOneWidget);
+
+      // Test removing notes
+      expect(deletebuttonFinder, findsOneWidget);
+      await tester.tap(deletebuttonFinder, warnIfMissed: false);
+      await tester.pumpAndSettle();
+      expect(find.text('hello world!'), findsNothing);
+    });
+  });
+
+  group('SchedulePage Tests', () { 
+    testWidgets('SchedulePage UI Test', (WidgetTester tester) async {
+
+      // Build SchedulePage widget
+      await tester.pumpWidget(const MyApp());
+
+      final buttonFinder = find.byIcon(Icons.schedule);
+      await tester.tap(buttonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(SchedulePage), findsOneWidget);
+
+      // Verify SchedulePage title and icon
+      expect(find.byIcon(Icons.calendar_today), findsOneWidget);
+      expect(find.text('Schedule'), findsOneWidget);
+
+      // Check working bookmarks button (AECH sample)
+      bool isAECHTextButton(Widget widget) {
+        if (widget is TextButton) {
+          final textButton = widget;
+          return textButton.child is Text && (textButton.child as Text).data == 'AECH';
+        }
+        return false;
+      }
+
+      final aechbuttonFinder = find.byWidgetPredicate(isAECHTextButton);
+      await tester.tap(aechbuttonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(FloorPlanPage), findsOneWidget);
+
+      // Check if tapping outside ModalBottomSheet returns screen to SchedulePage
+      await tester.tap(find.byType(Scaffold), warnIfMissed: false);
+      await tester.pumpAndSettle();
+      expect(find.byType(SchedulePage), findsOneWidget);    // Verify if SchedulePage is visible again
     });
   });
 }
