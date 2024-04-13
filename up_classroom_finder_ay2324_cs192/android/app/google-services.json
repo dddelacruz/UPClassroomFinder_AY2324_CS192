@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "458477381920",
+    "project_id": "cs192upclassroomfinder",
+    "storage_bucket": "cs192upclassroomfinder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458477381920:android:c3cf6b042298de46c40f45",
+        "android_client_info": {
+          "package_name": "com.example.cs192classroomfinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB04LOXWJN1DSxnw4dbjVbH26WV8DEFm2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458477381920:android:b9f9a680c896e12ac40f45",
+        "android_client_info": {
+          "package_name": "com.example.up_classroom_finder_ay2324_cs192"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB04LOXWJN1DSxnw4dbjVbH26WV8DEFm2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
