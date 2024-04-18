@@ -10,6 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:up_classroom_finder_ay2324_cs192/main.dart';
 
+import '../lib/bookmark.dart';
+import '../lib/floorplan.dart';
+import '../lib/notes.dart';
+import '../lib/schedule.dart';
+
 void main() {
   group('MapPage Tests', () {
     testWidgets('MapPage UI Test', (WidgetTester tester) async {
