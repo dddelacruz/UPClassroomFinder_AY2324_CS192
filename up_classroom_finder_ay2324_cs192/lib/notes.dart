@@ -1,25 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class MyAppState extends ChangeNotifier {
-  // Initialize list for notes
   List<String> notes = [];
+
+  // Load notes from shared preferences
+  Future<void> loadNotes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedNotes = prefs.getStringList('notes');
+    if (savedNotes != null) {
+      notes = savedNotes;
+    }
+    notifyListeners();
+  }
+
+  // Save notes to shared preferences
+  Future<void> saveNotes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('notes', notes);
+  }
+
+  // Add a note
+  void addNote(String note) {
+    notes.add(note);
+    saveNotes();
+    notifyListeners();
+  }
+
+  // Remove a note
+  void removeNoteAtIndex(int index) {
+    notes.removeAt(index);
+    saveNotes();
+    notifyListeners();
+  }
 }
 
-
-// *** Notes page widget ***
 class NotesPage extends StatefulWidget {
   @override
   _NotesPage createState() => _NotesPage();
 }
-// *** Notes page widget ***
 
-// *** Notes page state ***
 class _NotesPage extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    appState.loadNotes();
     return Scaffold(
       appBar: AppBar(
         title: Text('Notes', style: TextStyle(color: Colors.white)),
@@ -33,9 +60,7 @@ class _NotesPage extends State<NotesPage> {
             trailing: IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                setState(() {
-                  appState.notes.removeAt(index);
-                });
+                appState.removeNoteAtIndex(index); // Remove note
               },
             ),
           );
@@ -43,14 +68,14 @@ class _NotesPage extends State<NotesPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          addNote(appState);
+          addNote(appState); // Add note
         },
         child: Icon(Icons.add),
       ),
     );
   }
 
-  void addNote(appState) {
+  void addNote(MyAppState appState) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -59,10 +84,8 @@ class _NotesPage extends State<NotesPage> {
           content: TextField(
             autofocus: true,
             onSubmitted: (value) {
-              setState(() {
-                appState.notes.add(value);
-              });
-              Navigator.pop(context); // Close the dialog
+              appState.addNote(value); // Add note
+              Navigator.pop(context); // Close dialog
             },
             decoration: InputDecoration(
               hintText: 'Enter your note',
@@ -73,4 +96,3 @@ class _NotesPage extends State<NotesPage> {
     );
   }
 }
-// *** Notes page state ***

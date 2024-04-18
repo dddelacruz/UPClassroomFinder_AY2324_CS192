@@ -38,6 +38,12 @@ dependencies:
   firebase_core: ^2.29.0
   cloud_firestore: ^4.16.1
 
+  # Unique random ID generator for notes
+  uuid: ^4.4.0
+
+  # Shared preferences local database
+  shared_preferences: ^2.2.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
