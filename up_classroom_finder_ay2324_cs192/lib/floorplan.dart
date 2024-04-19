@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'bookmark.dart';
 import 'notes.dart';
+
 
 class FloorPlanPage extends StatelessWidget {
   const FloorPlanPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var bmState = context.watch<MyAppState>();
+    bmState.loadBookmarks();
     return ListView(
       children: [
         Container(
@@ -15,7 +20,7 @@ class FloorPlanPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16), color: Colors.white),
             child: Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(bottom: 16),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,11 +30,20 @@ class FloorPlanPage extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        Icon(
-                          Icons.bookmark,
-                          size: 34,
-                          color: Color(0xff800000),
-                        )
+                        IconButton(
+                          icon: Icon(
+                            bmState.activeBookmarks.contains('AECH') ? Icons.bookmark : Icons.bookmark_border,
+                            size: 34,
+                            color: Color(0xff800000),
+                          ),
+                          onPressed: () {
+                            if (bmState.activeBookmarks.contains('AECH')) {
+                              bmState.removeBookmark('AECH'); // Remove the bookmark if shaded
+                            } else {
+                                bmState.addBookmark('AECH'); // Add the bookmark if not shaded
+                            }
+                          },
+                        ),
                       ]),
                 ), // heading and bookmark row
                 const Padding(

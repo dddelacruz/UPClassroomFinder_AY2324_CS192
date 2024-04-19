@@ -1,11 +1,22 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'floorplan.dart';
+import 'notes.dart';
 
-class BookmarksPage extends StatelessWidget {
-  const BookmarksPage({super.key});
+
+class BookmarksPage extends StatefulWidget {
+  const BookmarksPage({Key? key}) : super(key: key);
 
   @override
+  _BookmarksPageState createState() => _BookmarksPageState();
+}
+
+class _BookmarksPageState extends State<BookmarksPage> {
+  @override
   Widget build(BuildContext context) {
+    var bmState = context.watch<MyAppState>();
+    bmState.loadBookmarks();
     return Scaffold(
       appBar: AppBar(
         title: Text('Bookmarks',
@@ -32,7 +43,9 @@ class BookmarksPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10, top: 10),
                 child: ListView(
                   children: [
-                    ListTile(
+                    // Conditionally build ListTile based on active bookmarks
+                    if (bmState.activeBookmarks.contains('AECH'))
+                      ListTile(
                         leading: const Icon(Icons.arrow_drop_down),
                         title: Text("AECH"),
                         visualDensity:
@@ -43,28 +56,36 @@ class BookmarksPage extends StatelessWidget {
                             builder: (BuildContext context) =>
                                 const FloorPlanPage(),
                           );
-                        }),
+                        },
+                      ),
                   ],
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(children: [
-                TextButton(
-                  child: Text("Back"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Expanded(
-                  child: Container(),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text("Delete"),
-                ),
-              ]),
+              child: Row(
+                children: [
+                  TextButton(
+                    child: Text("Back"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        // Remove 'AECH' from active bookmarks
+                        bmState.removeBookmark('AECH');
+                      });
+                    },
+                    child: Text("Delete"),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

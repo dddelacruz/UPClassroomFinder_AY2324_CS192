@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class MyAppState extends ChangeNotifier {
   List<String> notes = [];
@@ -33,6 +32,39 @@ class MyAppState extends ChangeNotifier {
   void removeNoteAtIndex(int index) {
     notes.removeAt(index);
     saveNotes();
+    notifyListeners();
+  }
+
+  // Bookmark State
+  List<String> activeBookmarks = []; // Maintain a list of active bookmarks
+
+  // Load activeBookmarks from shared preferences
+  Future<void> loadBookmarks() async {
+    SharedPreferences prefs_bm = await SharedPreferences.getInstance();
+    List<String>? savedBookmarks = prefs_bm.getStringList('activeBookmarks');
+    if (savedBookmarks != null) {
+      activeBookmarks = savedBookmarks;
+    }
+    notifyListeners();
+  }
+
+  // Save activeBookmarks to shared preferences
+  Future<void> saveBookmark() async {
+    SharedPreferences prefs_bm = await SharedPreferences.getInstance();
+    await prefs_bm.setStringList('activeBookmarks', activeBookmarks);
+  }
+
+  // Add a bookmark
+  void addBookmark(String bookmark) {
+    activeBookmarks.add(bookmark);
+    saveBookmark();
+    notifyListeners();
+  }
+
+  // Remove a bookmark
+  void removeBookmark(String bookmark) {
+    activeBookmarks.remove(bookmark);
+    saveBookmark();
     notifyListeners();
   }
 }
