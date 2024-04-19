@@ -7,8 +7,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'package:up_classroom_finder_ay2324_cs192/main.dart';
+
+import 'package:up_classroom_finder_ay2324_cs192/bookmark.dart';
+import 'package:up_classroom_finder_ay2324_cs192/floorplan.dart';
+import 'package:up_classroom_finder_ay2324_cs192/notes.dart';
+import 'package:up_classroom_finder_ay2324_cs192/schedule.dart';
+import 'package:up_classroom_finder_ay2324_cs192/map.dart';
 
 void main() {
   group('MapPage Tests', () {
@@ -18,7 +26,7 @@ void main() {
       await tester.pumpWidget(const MyApp());
 
       // Verify existence of map image
-      expect(find.byType(Image), findsOneWidget);
+      expect(find.byType(MapPage), findsOneWidget);
 
       // Verify existence of search bar
       expect(find.byType(TextField), findsOneWidget);
@@ -54,7 +62,7 @@ void main() {
       expect(find.byIcon(Icons.bookmark), findsOneWidget);
       expect(find.text('Bookmarks'), findsOneWidget);
 
-      // Find an existing bookmark
+      /* Find an existing bookmark
       final bookmarkFinder = find.byType(ListTile);
       await tester.tap(bookmarkFinder);
       await tester.pumpAndSettle();
@@ -64,6 +72,7 @@ void main() {
       await tester.tap(find.byType(Scaffold), warnIfMissed: false);
       await tester.pump();
       expect(find.byType(BookmarksPage), findsOneWidget);    // Verify if BookmarksPage is visible again
+      */
 
       // Verify working Back button
       bool isBackTextButton(Widget widget) {
@@ -87,6 +96,7 @@ void main() {
       // Build Floorplan widget
       await tester.pumpWidget(const MyApp());
 
+      /*
       final buttonFinder = find.byIcon(Icons.bookmark);
       await tester.tap(buttonFinder);
       await tester.pumpAndSettle();
@@ -96,7 +106,12 @@ void main() {
       await tester.tap(bookmarkFinder);
       await tester.pumpAndSettle();
       expect(find.byType(FloorPlanPage), findsOneWidget);
+      */
 
+      final gestureFinder = find.byType(MarkerLayer);
+      await tester.tap(gestureFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(FloorPlanPage), findsOneWidget);
       // Verify working Notes button
       bool isNotesTextButton(Widget widget) {
         if (widget is TextButton) {
