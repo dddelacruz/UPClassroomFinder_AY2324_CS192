@@ -104,7 +104,7 @@ class _MapPageState extends State<MapPage> {
   getClientStream() async {
     var data = await FirebaseFirestore.instance.collection('upclassroom').orderBy('NAME').get();
     setState(() {
-      _allResults = data.docs;
+      _allResults = data.docs.map((doc) => doc.data()).toList();
     });
   }
 
@@ -142,6 +142,16 @@ Widget build(BuildContext context) {
                   title: Text(_resultList[index]['NAME']),
                   subtitle: Text(_resultList[index]['LOCATION']),
                   trailing: Text(_resultList[index]['FLOOR NUMBER']),
+                  onTap: (){
+                    Navigator.push(
+                       context,
+                        MaterialPageRoute(
+                           builder: (context) => ClassroomDetailPage(
+                            upclassroom: _resultList[index],
+                           ),
+                        ),
+                    );
+                  },
                 );
               },
             ),
@@ -198,6 +208,59 @@ Widget build(BuildContext context) {
 }
 }
 
+class ClassroomDetailPage extends StatelessWidget {
+  final Map<String, dynamic> upclassroom;
+
+  const ClassroomDetailPage({Key? key, required this.upclassroom}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(upclassroom['CLASSROOM NUMBER']),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffffe9ea),
+              child: Icon(Icons.location_on, size: 18, color: Color(0xffd34343)),
+            ),
+            title: Text("Address"),
+            subtitle: Text(upclassroom['LOCATION']),
+          ),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffffe9ea),
+              child: Icon(Icons.access_time_sharp, size: 18, color: Color(0xffd34343)),
+            ),
+            title: Text("Opening Hours"),
+            subtitle: Text(upclassroom['OPENING HOURS']),
+          ),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffffe9ea),
+              child: Icon(Icons.emoji_transportation, size: 18, color: Color(0xffd34343)),
+            ),
+            title: Text("Transportation"),
+            subtitle: Text(upclassroom['TRANSPORTATION']),
+          ),
+          TextButton(
+            onPressed: (){
+                    Navigator.push(
+                       context,
+                        MaterialPageRoute(
+                           builder: (context) => FloorPlanPage(),
+                        ),
+                    );
+                  },
+                  child:Text("View Floor Plan"),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class BookmarksPage extends StatelessWidget {
   const BookmarksPage({super.key});
