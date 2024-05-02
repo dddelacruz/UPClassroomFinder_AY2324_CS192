@@ -43,6 +43,7 @@ dependencies:
 
   # Shared preferences local database
   shared_preferences: ^2.2.3
+  time_scheduler_table: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,21 +1,33 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'floorplan.dart';
+import 'notes.dart';
 
-class SchedulePage extends StatelessWidget {
-  const SchedulePage({super.key});
+
+class SchedulePage extends StatefulWidget {
+  const SchedulePage({Key? key});
 
   @override
+  _SchedulePageState createState() => _SchedulePageState();
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  @override
   Widget build(BuildContext context) {
+    var schedState = context.watch<MyAppState>();
+    schedState.loadSched();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Schedule',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
+        title: const Text(
+          'Schedule',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Color(0xff264B30),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 10.0),
           child: Icon(
             Icons.calendar_today,
             color: Color(0xff800000),
@@ -28,139 +40,146 @@ class SchedulePage extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, top: 10.0),
-                child: ListView(
-                  children: [
-                    ListTile(
-                      title: Text("MONDAY",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                    ),
-                    ListTile(
-                      title: Table(
-                        children: [
-                          TableRow(children: <Widget>[
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "7:00-9:00",
-                                      textAlign: TextAlign.center,
-                                    )),
-                                    height: 35)),
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "CS191",
-                                      textAlign: TextAlign.center,
-                                    )),
-                                    height: 35)),
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: TextButton(
-                                      child: Text("AECH",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Color(0xff800000))),
-                                      onPressed: () {
-                                        showModalBottomSheet<void>(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              const FloorPlanPage(),
-                                        );
-                                      },
-                                    )),
-                                    height: 35)),
-                          ]),
-                          TableRow(children: <Widget>[
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "10:30-11:30",
-                                      textAlign: TextAlign.center,
-                                    )),
-                                    height: 35)),
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "CWTS",
-                                      textAlign: TextAlign.center,
-                                    )),
-                                    height: 35)),
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: TextButton(
-                                      child: Text("Palma Hall",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Color(0xff800000))),
-                                      onPressed: () {},
-                                    )),
-                                    height: 35)),
-                          ]),
-                          TableRow(children: <Widget>[
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "16:00-17:00",
-                                      textAlign: TextAlign.center,
-                                    )),
-                                    height: 35)),
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "Nihonggo",
-                                      textAlign: TextAlign.center,
-                                    )),
-                                    height: 35)),
-                            TableCell(
-                                child: Container(
-                                    child: Center(
-                                        child: TextButton(
-                                      child: Text("Melchor Hall",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Color(0xff800000))),
-                                      onPressed: () {},
-                                    )),
-                                    height: 35)),
-                          ]),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              child: ListView.builder(
+                itemCount: schedState.schedules.length,
+                itemBuilder: (context, index) {
+                  final schedule = schedState.schedules[index];
+                  return buildClassRow(schedule, () {
+                    schedState.removeSchedAtIndex(index);
+                  });
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(children: [
-                TextButton(
-                  child: Text("Back"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Expanded(
-                  child: Container(),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text("Edit"),
-                ),
-              ]),
+              child: Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Back"),
+                  ),
+                  Expanded(child: Container()),
+                  TextButton(
+                    onPressed: () {
+                      showAddDialog(schedState);
+                    },
+                    child: Text("Add"),
+                  )
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  Widget buildClassRow(Map<String, String> schedule, Function() onDelete) {
+  return ListTile(
+    title: Table(
+      children: [
+        TableRow(children: <Widget>[
+          TableCell(
+            child: Container(
+              height: 35,
+              alignment: Alignment.center,
+              child: Text(schedule["time"]!, textAlign: TextAlign.center),
+            ),
+          ),
+          TableCell(
+            child: Container(
+              height: 35,
+              alignment: Alignment.center,
+              child: Text(schedule["day"]!, textAlign: TextAlign.center),
+            ),
+          ),
+          TableCell(
+            child: Container(
+              height: 35,
+              alignment: Alignment.center,
+              child: Text(schedule["subject"]!, textAlign: TextAlign.center),
+            ),
+          ),
+          TableCell(
+            child: Container(
+              height: 35,
+              alignment: Alignment.center,
+              child: TextButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) => const FloorPlanPage(),
+                  );
+                },
+                child: Text(
+                  schedule["location"]!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xff800000)),
+                ),
+              ),
+            ),
+          ),
+        ]),
+      ],
+    ),
+    trailing: IconButton(
+      icon: Icon(Icons.delete),
+      onPressed: onDelete,
+    ),
+  );
+}
+
+
+  void showAddDialog(MyAppState schedState) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Add Schedule"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: 'Time'),
+                onChanged: (value) => _newSchedule["time"] = value,
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Day'),
+                onChanged: (value) => _newSchedule["day"] = value,
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Subject'),
+                onChanged: (value) => _newSchedule["subject"] = value,
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Location'),
+                onChanged: (value) => _newSchedule["location"] = value,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  schedState.addSched(_newSchedule);
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text("Add"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  final Map<String, String> _newSchedule = {"time": "", "day": "", "subject": "", "location": ""};
 }
