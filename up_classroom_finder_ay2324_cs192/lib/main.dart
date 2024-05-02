@@ -123,19 +123,35 @@ class _MapPageState extends State<MapPage> {
         title: CupertinoSearchTextField(
           controller: _searchController,
         ),
+      leading: _searchController.text.isNotEmpty
+        ? IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              // Clear the search text when pressing back
+              //MapPage();
+              _searchController.clear();
+              // Update search results after clearing text
+              searchResultList();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MapPage()),
+            );
+              
+            },
+          )
+        : null, // Conditionally render the back button
+
+
       ),
       body: Stack(
         children: <Widget>[
-          // Conditionally render the map image based on search text
-          if (_resultList
-              .isEmpty) //(_searchController.text.isEmpty) // Only show the image if search text is empty
+          if (_resultList.isEmpty)
             Positioned.fill(
               child: Image.asset(
                 'assets/map.jpg',
                 fit: BoxFit.cover,
               ),
             ),
-          // Render the list view with white background when searching
           Positioned(
             top: 0,
             left: 0,
@@ -156,7 +172,7 @@ class _MapPageState extends State<MapPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ClassroomDetailPage(
+                          builder: (context) => FloorPlanPage(
                             upclassroom: _resultList[index],
                           ),
                         ),
@@ -167,7 +183,6 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
           ),
-          // Bottom navigation bar
           Positioned(
             left: 0,
             right: 0,
@@ -219,7 +234,6 @@ class _MapPageState extends State<MapPage> {
     );
   }
 }
-
 class ClassroomDetailPage extends StatelessWidget {
   final Map<String, dynamic> upclassroom;
 
