@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'floorplan.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
 
 class SchedulePage extends StatelessWidget {
   const SchedulePage({super.key});

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'bookmark.dart';
-import 'notes.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 
 class FloorPlanPage extends StatelessWidget {
   const FloorPlanPage({super.key});

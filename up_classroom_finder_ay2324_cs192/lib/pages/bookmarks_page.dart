@@ -1,9 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'floorplan.dart';
-import 'notes.dart';
-
+import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 
 class BookmarksPage extends StatefulWidget {
   const BookmarksPage({Key? key}) : super(key: key);
