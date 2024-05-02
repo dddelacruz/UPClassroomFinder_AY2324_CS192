@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'pages.dart';
 
 class FloorPlanPage extends StatelessWidget {
@@ -96,18 +98,23 @@ class FloorPlanPage extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 16),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Address",
-                                        style: TextStyle(color: Color(0xff999999)),
-                                      ),
-                                      Text(
-                                        data['address'],
-                                        style: const TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
+                                  child: Flexible(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "Address",
+                                          style: TextStyle(color: Color(0xff999999)),
+                                        ),
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width - 80,
+                                          child: Text(
+                                            data['address'],
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 )
                               ],
@@ -131,9 +138,12 @@ class FloorPlanPage extends StatelessWidget {
                                       const Text(
                                         "Opening Hours",
                                         style: TextStyle(color: Color(0xff999999))),
-                                      Text(
-                                        data['opening hours'],
-                                        style: const TextStyle(fontWeight: FontWeight.bold))
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width - 80,
+                                        child: Text(
+                                          data['opening hours'],
+                                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -159,9 +169,12 @@ class FloorPlanPage extends StatelessWidget {
                                         "Transportation",
                                         style: TextStyle(color: Color(0xff999999)),
                                       ),
-                                      Text(
-                                        data['transportation'],
-                                        style: const TextStyle(fontWeight: FontWeight.bold))
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width - 80,
+                                        child: Text(
+                                          data['transportation'],
+                                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      )
                                     ],
                                   ),
                                 ),
