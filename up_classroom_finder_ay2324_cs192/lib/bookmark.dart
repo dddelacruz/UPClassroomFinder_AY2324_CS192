@@ -1,11 +1,20 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'pages.dart';
 
-class BookmarksPage extends StatelessWidget {
-  const BookmarksPage({super.key});
+class BookmarksPage extends StatefulWidget {
+  const BookmarksPage({Key? key}) : super(key: key);
 
   @override
+  _BookmarksPageState createState() => _BookmarksPageState();
+}
+
+class _BookmarksPageState extends State<BookmarksPage> {
+  @override
   Widget build(BuildContext context) {
+    var bmState = context.watch<MyAppState>();
+    bmState.loadBookmarks();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bookmarks',
@@ -32,7 +41,9 @@ class BookmarksPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10, top: 10),
                 child: ListView(
                   children: [
-                    ListTile(
+                    // Conditionally build ListTile based on active bookmarks
+                    if (bmState.activeBookmarks.contains('AECH'))
+                      ListTile(
                         leading: const Icon(Icons.arrow_drop_down),
                         title: const Text("AECH"),
                         visualDensity:
@@ -43,7 +54,8 @@ class BookmarksPage extends StatelessWidget {
                             builder: (BuildContext context) =>
                                 FloorPlanPage("AECH"),
                           );
-                        }),
+                        },
+                      ),
                   ],
                 ),
               ),
