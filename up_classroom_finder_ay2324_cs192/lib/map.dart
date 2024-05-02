@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+
 
 
 import 'notes.dart';
 import 'bookmark.dart';
 import 'schedule.dart';
 import 'floorplan.dart';
+import 'firebase_options.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
@@ -104,7 +109,28 @@ class MapIMG extends StatefulWidget {
   State<MapIMG> createState() => _MapIMGState();
 }
 
+
+class Building{
+  var name;
+  var lat;
+  var long;
+
+  Building(var name, var lat, var long){
+    this.name = name;
+    this.lat = lat;
+    this.long = long;
+  }
+}
+
+
 class _MapIMGState extends State<MapIMG> {
+  // for testing
+  
+  var buildings = [Building('AECH', 14.6486, 121.06855), Building('EEEI', 14.64951, 121.06827), Building('CSLib', 14.64925, 121.06918)];
+
+  //
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,10 +146,31 @@ class _MapIMGState extends State<MapIMG> {
           children: [
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example. app',
             ),
             MarkerLayer(
-              markers: [
+              markers: 
+                buildings.map((b) => 
+                  Marker(
+                    point: LatLng(b.lat,b.long),
+                    width: 80,
+                    height: 80,
+                    child: GestureDetector(
+                      onTap: (){
+                        showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  const FloorPlanPage(),
+                            );
+                      },
+                      child: Icon(
+                        Icons.location_pin,
+                        size: 50
+                      ),
+                    ),
+                  )
+                ).toList(),
+                
+                /*
                 Marker(
                   point: LatLng(14.64866,121.06866),
                   width: 80,
@@ -141,10 +188,11 @@ class _MapIMGState extends State<MapIMG> {
                       size: 50
                     ),
                   ),
-                ),
-              ],
+                ),*/
             ),
           ],
         ));
   }
 }
+
+
