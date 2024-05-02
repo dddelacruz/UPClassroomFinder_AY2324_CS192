@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'bookmark.dart';
 import 'notes.dart';
 
-
 class FloorPlanPage extends StatelessWidget {
   const FloorPlanPage({super.key});
 
@@ -32,15 +31,19 @@ class FloorPlanPage extends StatelessWidget {
                         ),
                         IconButton(
                           icon: Icon(
-                            bmState.activeBookmarks.contains('AECH') ? Icons.bookmark : Icons.bookmark_border,
+                            bmState.activeBookmarks.contains('AECH')
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
                             size: 34,
                             color: Color(0xff800000),
                           ),
                           onPressed: () {
                             if (bmState.activeBookmarks.contains('AECH')) {
-                              bmState.removeBookmark('AECH'); // Remove the bookmark if shaded
+                              bmState.removeBookmark(
+                                  'AECH'); // Remove the bookmark if shaded
                             } else {
-                                bmState.addBookmark('AECH'); // Add the bookmark if not shaded
+                              bmState.addBookmark(
+                                  'AECH'); // Add the bookmark if not shaded
                             }
                           },
                         ),

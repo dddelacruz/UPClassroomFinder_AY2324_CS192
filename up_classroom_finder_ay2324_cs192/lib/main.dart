@@ -1,11 +1,11 @@
-//-- needs improvement on the back function of the search bar 
+//-- needs improvement on the back function of the search bar
 //-- needs improvement on the UI of the floor plan (make it a "window" like before)
-
 
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:up_classroom_finder_ay2324_cs192/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -106,116 +106,125 @@ class _MapPageState extends State<MapPage> {
   }
 
   getClientStream() async {
-    var data = await FirebaseFirestore.instance.collection('upclassroom').orderBy('NAME').get();
+    var data = await FirebaseFirestore.instance
+        .collection('upclassroom')
+        .orderBy('NAME')
+        .get();
     setState(() {
       _allResults = data.docs.map((doc) => doc.data()).toList();
     });
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      backgroundColor: Color(0xFF8C0000),
-      title: CupertinoSearchTextField(
-        controller: _searchController,
-      ),
-    ),
-    body: Stack(
-      children: <Widget>[
-        // Conditionally render the map image based on search text
-        if (_resultList.isEmpty) //(_searchController.text.isEmpty) // Only show the image if search text is empty
-          Positioned.fill(
-            child: Image.asset(
-              'assets/map.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
-        // Render the list view with white background when searching
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Container(
-            color: _searchController.text.isEmpty ? Colors.transparent : Colors.white,
-            child: ListView.builder(
-              itemCount: _resultList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_resultList[index]['NAME']),
-                  subtitle: Text(_resultList[index]['LOCATION']),
-                  trailing: Text(_resultList[index]['FLOOR NUMBER']),
-                  onTap: (){
-                    Navigator.push(
-                       context,
-                        MaterialPageRoute(
-                           builder: (context) => ClassroomDetailPage(
-                            upclassroom: _resultList[index],
-                           ),
-                        ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF8C0000),
+        title: CupertinoSearchTextField(
+          controller: _searchController,
         ),
-        // Bottom navigation bar
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: BottomAppBar(
-            color: Color(0xFF8C0000),
-            shape: const CircularNotchedRectangle(),
-            child: IconTheme(
-              data: IconThemeData(color: Colors.white),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
+      ),
+      body: Stack(
+        children: <Widget>[
+          // Conditionally render the map image based on search text
+          if (_resultList
+              .isEmpty) //(_searchController.text.isEmpty) // Only show the image if search text is empty
+            Positioned.fill(
+              child: Image.asset(
+                'assets/map.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
+          // Render the list view with white background when searching
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              color: _searchController.text.isEmpty
+                  ? Colors.transparent
+                  : Colors.white,
+              child: ListView.builder(
+                itemCount: _resultList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_resultList[index]['NAME']),
+                    subtitle: Text(_resultList[index]['LOCATION']),
+                    trailing: Text(_resultList[index]['FLOOR NUMBER']),
+                    onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => NotesPage()),
+                        MaterialPageRoute(
+                          builder: (context) => ClassroomDetailPage(
+                            upclassroom: _resultList[index],
+                          ),
+                        ),
                       );
                     },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.schedule),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SchedulePage()),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.bookmark),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const BookmarksPage()),
-                      );
-                    },
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+          // Bottom navigation bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: BottomAppBar(
+              color: Color(0xFF8C0000),
+              shape: const CircularNotchedRectangle(),
+              child: IconTheme(
+                data: IconThemeData(color: Colors.white),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NotesPage()),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.schedule),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SchedulePage()),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.bookmark),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BookmarksPage()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class ClassroomDetailPage extends StatelessWidget {
   final Map<String, dynamic> upclassroom;
 
-  const ClassroomDetailPage({Key? key, required this.upclassroom}) : super(key: key);
+  const ClassroomDetailPage({Key? key, required this.upclassroom})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -225,10 +234,27 @@ class ClassroomDetailPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          SizedBox(
+            height: 14,
+          ),
+          upclassroom['LOCATION'] == "UP AECH"
+              ? Dialog(
+                  child: Image.asset(
+                    "assets/floorplan_AECH.jpg",
+                    height: 200,
+                    width: 200,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : Center(child: Text("No floorplan available as of now...")),
+          SizedBox(
+            height: 14,
+          ),
           ListTile(
             leading: CircleAvatar(
               backgroundColor: Color(0xffffe9ea),
-              child: Icon(Icons.location_on, size: 18, color: Color(0xffd34343)),
+              child:
+                  Icon(Icons.location_on, size: 18, color: Color(0xffd34343)),
             ),
             title: Text("Address"),
             subtitle: Text(upclassroom['LOCATION']),
@@ -236,7 +262,8 @@ class ClassroomDetailPage extends StatelessWidget {
           ListTile(
             leading: CircleAvatar(
               backgroundColor: Color(0xffffe9ea),
-              child: Icon(Icons.access_time_sharp, size: 18, color: Color(0xffd34343)),
+              child: Icon(Icons.access_time_sharp,
+                  size: 18, color: Color(0xffd34343)),
             ),
             title: Text("Opening Hours"),
             subtitle: Text(upclassroom['OPENING HOURS']),
@@ -244,22 +271,23 @@ class ClassroomDetailPage extends StatelessWidget {
           ListTile(
             leading: CircleAvatar(
               backgroundColor: Color(0xffffe9ea),
-              child: Icon(Icons.emoji_transportation, size: 18, color: Color(0xffd34343)),
+              child: Icon(Icons.emoji_transportation,
+                  size: 18, color: Color(0xffd34343)),
             ),
             title: Text("Transportation"),
             subtitle: Text(upclassroom['TRANSPORTATION']),
           ),
-          TextButton(
-            onPressed: (){
-                    Navigator.push(
-                       context,
-                        MaterialPageRoute(
-                           builder: (context) => FloorPlanPage(),
-                        ),
-                    );
-                  },
-                  child:Text("View Floor Plan"),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => FloorPlanPage(),
+          //       ),
+          //     );
+          //   },
+          //   child: Text("View Floor Plan"),
+          // ),
         ],
       ),
     );
