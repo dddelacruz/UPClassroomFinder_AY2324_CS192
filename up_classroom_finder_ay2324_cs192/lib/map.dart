@@ -159,7 +159,7 @@ class _MapIMGState extends State<MapIMG> {
                         showModalBottomSheet<void>(
                               context: context,
                               builder: (BuildContext context) =>
-                                  const FloorPlanPage(),
+                                  FloorPlanPage(b.name),
                             );
                       },
                       child: Icon(

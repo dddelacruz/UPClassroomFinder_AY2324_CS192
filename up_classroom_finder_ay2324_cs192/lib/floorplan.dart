@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'notes.dart';
 
 class FloorPlanPage extends StatelessWidget {
-  const FloorPlanPage({super.key});
+  FloorPlanPage(this.location);
+
+  final String location;
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +17,13 @@ class FloorPlanPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16), color: Colors.white),
             child: Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(bottom: 16),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "AECH",
+                          location,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),

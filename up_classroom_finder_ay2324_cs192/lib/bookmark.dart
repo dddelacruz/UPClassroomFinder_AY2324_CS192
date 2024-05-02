@@ -41,7 +41,7 @@ class BookmarksPage extends StatelessWidget {
                           showModalBottomSheet<void>(
                             context: context,
                             builder: (BuildContext context) =>
-                                const FloorPlanPage(),
+                                FloorPlanPage("AECH"),
                           );
                         }),
                   ],
