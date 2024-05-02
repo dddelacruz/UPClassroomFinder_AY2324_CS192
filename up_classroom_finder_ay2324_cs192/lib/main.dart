@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:up_classroom_finder_ay2324_cs192/firebase_options.dart';
 
 import 'pages.dart';
 
@@ -23,9 +22,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'UP CLASSROOM FINDER',
         theme: ThemeData(
-          primaryColor: Color(0xFF8C0000), //Maroon
+          primaryColor: const Color(0xFF8C0000), //Maroon
 
-          primarySwatch: MaterialColor(
+          primarySwatch: const MaterialColor(
             0xFF8C0000,
             <int, Color>{
               50: Color(0xFFF8E0E0),
