@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'floorplan.dart';
+import 'pages.dart';
 
 class BookmarksPage extends StatelessWidget {
   const BookmarksPage({super.key});
@@ -8,14 +8,14 @@ class BookmarksPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bookmarks',
+        title: const Text('Bookmarks',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             )),
-        backgroundColor: Color(0xff264B30),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
+        backgroundColor: const Color(0xff264B30),
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 10.0),
           child: Icon(
             Icons.bookmark,
             color: Color(0xff800000),
@@ -34,7 +34,7 @@ class BookmarksPage extends StatelessWidget {
                   children: [
                     ListTile(
                         leading: const Icon(Icons.arrow_drop_down),
-                        title: Text("AECH"),
+                        title: const Text("AECH"),
                         visualDensity:
                             const VisualDensity(horizontal: 0, vertical: -4),
                         onTap: () {
@@ -52,7 +52,7 @@ class BookmarksPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(children: [
                 TextButton(
-                  child: Text("Back"),
+                  child: const Text("Back"),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -62,7 +62,7 @@ class BookmarksPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: Text("Delete"),
+                  child: const Text("Delete"),
                 ),
               ]),
             ),

@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:up_classroom_finder_ay2324_cs192/firebase_options.dart';
 
-import 'map.dart';
-import 'notes.dart';
+import 'pages.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
