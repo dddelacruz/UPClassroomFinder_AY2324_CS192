@@ -115,83 +115,151 @@ class Building{
   var lat;
   var long;
 
+  
   Building(var name, var lat, var long){
     this.name = name;
     this.lat = lat;
     this.long = long;
   }
+
+  /*
+  Building({
+    this.name,
+    this.lat,
+    this.long
+  });
+  
+
+  factory Building.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,){
+      final data = snapshot.data();
+      return Building(
+        name: data?['name'],
+        lat: data?['lat'],
+        long: data?['long'],
+      );
+    }
+  */
 }
 
 
 class _MapIMGState extends State<MapIMG> {
   // for testing
-  
-  var buildings = [Building('AECH', 14.6486, 121.06855), Building('EEEI', 14.64951, 121.06827), Building('CSLib', 14.64925, 121.06918)];
-
+  //var buildings = [Building('AECH', 14.6486, 121.06855), Building('EEEI', 14.64951, 121.06827), Building('CSLib', 14.64925, 121.06918)];
   //
+
+  // get list of buildings from firebase
+  //  1. read data from buildings collection
+  //  2. convert o list of buildings
+  Future<List> readBuildings() async{
+    //print("getting buildings from database");
+
+    CollectionReference ref = FirebaseFirestore.instance.collection("buildings");
+    
+    QuerySnapshot snap = await ref.get();
+
+    final allData = snap.docs.map((doc) => doc.data()).toList();
+
+    return allData;
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Maps'),
-        ),
-        body: FlutterMap(
-          options: MapOptions(
-            initialCenter: LatLng(14.64860,121.06855),
-            initialZoom: 18,
-            interactionOptions: InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
-          ),
-          children: [
-            TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            ),
-            MarkerLayer(
-              markers: 
-                buildings.map((b) => 
-                  Marker(
-                    point: LatLng(b.lat,b.long),
-                    width: 80,
-                    height: 80,
-                    child: GestureDetector(
-                      onTap: (){
-                        showModalBottomSheet<void>(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  FloorPlanPage(b.name),
-                            );
-                      },
-                      child: Icon(
-                        Icons.location_pin,
-                        size: 50
-                      ),
-                    ),
-                  )
-                ).toList(),
-                
-                /*
-                Marker(
-                  point: LatLng(14.64866,121.06866),
-                  width: 80,
-                  height: 80,
-                  child: GestureDetector(
-                    onTap: (){
-                      showModalBottomSheet<void>(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                const FloorPlanPage(),
-                          );
-                    },
-                    child: Icon(
-                      Icons.location_pin,
-                      size: 50
-                    ),
+    return FutureBuilder(
+      future: readBuildings(),
+      builder: (builder, snapshot){
+        // Checking if future is resolved
+        if (snapshot.connectionState == ConnectionState.done) {
+          // If we got an error
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                '${snapshot.error} occurred',
+                style: TextStyle(fontSize: 18),
+              ),
+            );  
+            
+            // if we got our data
+          } else if (snapshot.hasData) {
+            // Extracting data from snapshot object
+            final data = snapshot.data;
+            //print(data);
+
+            if (data != null){
+              final buildings = data.map((e) => Building(e['name'], e['lat'], e['long']));
+
+              return Scaffold(
+              appBar: AppBar(
+                title: Text('Map'),
+              ),
+              body: FlutterMap(
+                options: const MapOptions(
+                  initialCenter: LatLng(14.64860,121.06855),
+                  initialZoom: 18,
+                  interactionOptions: InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
-                ),*/
-            ),
-          ],
-        ));
+                  MarkerLayer(
+                    markers: 
+                    // dynamically generate markers based on list of buildings
+                      buildings.map((b) => 
+                        Marker(
+                          point: LatLng(b.lat,b.long),
+                          width: 80,
+                          height: 80,
+                          child: GestureDetector(
+                            onTap: (){
+                              readBuildings();
+                              showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        FloorPlanPage(b.name),
+                                  );
+                            },
+                            child: const Icon(
+                              Icons.location_pin,
+                              size: 50
+                            ),
+                          ),
+                        )
+                      ).toList(),
+                      
+                      /*
+                      Marker(
+                        point: LatLng(14.64866,121.06866),
+                        width: 80,
+                        height: 80,
+                        child: GestureDetector(
+                          onTap: (){
+                            showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      const FloorPlanPage(),
+                                );
+                          },
+                          child: Icon(
+                            Icons.location_pin,
+                            size: 50
+                          ),
+                        ),
+                      ),*/
+                  ),
+                ],
+              ));
+            }
+        }
+          }
+
+          return Center(
+              child: CircularProgressIndicator(),
+            );
+
+        }   
+    );
   }
 }
 
