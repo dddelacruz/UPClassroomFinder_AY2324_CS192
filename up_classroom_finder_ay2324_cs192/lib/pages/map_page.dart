@@ -96,10 +96,6 @@ class _MapPageState extends State<MapPage> {
       body: Stack(
         children: <Widget>[
           if (_resultList.isEmpty)
-            // Map image
-            Positioned.fill(
-              child: MapIMG(),
-            ),
           Positioned(
             top: 0,
             left: 0,
@@ -177,6 +173,10 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
           ),
+          // Map image
+            Positioned.fill(
+              child: MapIMG(),
+            )
         ],
       ),
     );

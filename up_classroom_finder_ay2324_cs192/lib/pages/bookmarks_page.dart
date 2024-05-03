@@ -53,7 +53,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
                           showModalBottomSheet<void>(
                             context: context,
                             builder: (BuildContext context) =>
-                                const FloorPlanPage(),
+                                FloorPlanPage("AECH"),
                           );
                         },
                       ),
