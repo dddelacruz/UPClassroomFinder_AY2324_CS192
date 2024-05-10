@@ -37,7 +37,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   void _onSearchChanged() {
-    print(_searchController.text);
+    //print(_searchController.text);
     searchResultList();
   }
 
@@ -96,11 +96,11 @@ class _MapPageState extends State<MapPage> {
       body: Stack(
         children: <Widget>[
           // Map image
-          if (_resultList.isEmpty)
+          if (_resultList.isEmpty && _searchController.text == "")
             Positioned.fill(
               child: MapIMG(),
             ),
-          if (!_resultList.isEmpty)
+          if (_resultList.isNotEmpty)
           Positioned(
             top: 0,
             left: 0,
