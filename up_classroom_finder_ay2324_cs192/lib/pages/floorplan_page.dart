@@ -13,7 +13,6 @@ class FloorPlanPage extends StatelessWidget {
   Future readBuildingInfo() async{
     final docRef = db.collection("buildinginfo").doc(location);
 
-
     return await docRef.get();
   }
 

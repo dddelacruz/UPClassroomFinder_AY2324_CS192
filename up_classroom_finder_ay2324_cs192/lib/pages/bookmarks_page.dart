@@ -1,21 +1,21 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 
 class BookmarksPage extends StatefulWidget {
-  const BookmarksPage({Key? key}) : super(key: key);
+  const BookmarksPage({super.key});
 
   @override
-  _BookmarksPageState createState() => _BookmarksPageState();
+  BookmarksPageState createState() => BookmarksPageState();
 }
 
-class _BookmarksPageState extends State<BookmarksPage> {
+class BookmarksPageState extends State<BookmarksPage> {
   @override
   Widget build(BuildContext context) {
     var bmState = context.watch<MyAppState>();
     bmState.loadBookmarks();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Bookmarks',

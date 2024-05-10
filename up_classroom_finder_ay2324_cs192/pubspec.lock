@@ -199,7 +199,7 @@ packages:
     source: hosted
     version: "3.0.1"
   flutter_map:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_map
       sha256: cda8d72135b697f519287258b5294a57ce2f2a5ebf234f0e406aad4dc14c9399
@@ -281,7 +281,7 @@ packages:
     source: hosted
     version: "0.6.7"
   latlong2:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: latlong2
       sha256: "98227922caf49e6056f91b6c56945ea1c7b166f28ffcd5fb8e72fc0b453cc8fe"
@@ -489,7 +489,7 @@ packages:
     source: hosted
     version: "2.1.0"
   provider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: provider
       sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
@@ -662,7 +662,7 @@ packages:
     source: hosted
     version: "1.2.1"
   test:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: test
       sha256: a1f7595805820fcc05e5c52e3a231aedd0b72972cb333e8c738a8b1239448b6f
