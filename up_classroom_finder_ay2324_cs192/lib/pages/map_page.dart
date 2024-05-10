@@ -103,13 +103,13 @@ class _MapPageState extends State<MapPage> {
       body: Stack(
         children: <Widget>[
           // if search bar is not being used, show mapimage
-          if (_resultList.isEmpty && _searchController.text == "")
+          if (!_focus.hasFocus)
             Positioned.fill(
               child: MapIMG(),
             ),
 
           // if search bar is being used
-          if (_resultList.isNotEmpty)
+          if (_focus.hasFocus)
           Positioned(
             top: 0,
             left: 0,
@@ -140,7 +140,6 @@ class SearchResultsPage extends StatelessWidget{
     return PopScope(
       canPop: false,
       onPopInvoked: (bool popped){
-        print(popped);
         if(!popped){
           Navigator.pushReplacement(
             context,
@@ -182,6 +181,8 @@ class SearchResultsPage extends StatelessWidget{
 }
 
 class NavigationBar extends StatelessWidget{
+  const NavigationBar({super.key});
+
   @override
   build(BuildContext context){
     return BottomAppBar(
