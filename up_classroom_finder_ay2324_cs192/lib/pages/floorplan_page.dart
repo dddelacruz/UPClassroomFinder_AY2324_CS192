@@ -3,6 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 
+// hardcoded assets list for locations with floorplan
+final floorplanImgList =[
+  "AECH",
+];
+
 class FloorPlanPage extends StatelessWidget {
   FloorPlanPage(this.location, {super.key});
 
@@ -72,7 +77,7 @@ class BuildingInfo extends StatelessWidget{
     return Column(
       children: [
         HeadingRow(location), // heading and bookmark row
-        const FloorplanImgRow(), // floorplan image row
+        FloorplanImgRow(location), // floorplan image row
         const Divider(),
         AddressRow(data: data), // address row
         HoursRow(data: data), // hours row
@@ -238,30 +243,48 @@ class AddressRow extends StatelessWidget {
 }
 
 class FloorplanImgRow extends StatelessWidget {
-  const FloorplanImgRow({
-    super.key,
-  });
+  const FloorplanImgRow(this.location, {super.key,});
+
+  final String location;
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(bottom: 8),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          CircleAvatar(
+          // what are these arrows for?
+          /* const CircleAvatar(
             radius: 16,
             backgroundColor: Color(0xfff9f9f9),
             child: Icon(Icons.arrow_back_ios_outlined,
                 size: 18, color: Color(0xff800000)),
+          ), */
+
+          //Text("Floor plan image"),
+          floorplanImgList.contains(location)
+              // if file exists, load image
+              ? Center(
+                  child: Image.asset(
+                    "assets/floorplan_$location.jpg",
+                    width: MediaQuery.of(context).size.width - 32,
+                    fit: BoxFit.contain,
+                  ),
+                )
+              // file does not exist
+              : const Center(child: Text("No floorplan available as of now...")),
+
+          const SizedBox(
+            height: 14,
           ),
-          Text("Floor plan image"),
-          CircleAvatar(
+
+          /* const CircleAvatar(
             radius: 16,
             backgroundColor: Color(0xfff9f9f9),
             child: Icon(Icons.arrow_forward_ios,
                 size: 18, color: Color(0xff800000)),
-          ),
+          ), */
         ],
       ),
     );

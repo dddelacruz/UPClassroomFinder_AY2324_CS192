@@ -86,10 +86,15 @@ class _MapIMGState extends State<MapIMG> {
                             child: GestureDetector(
                               onTap: (){
                                 readBuildings();
-                                showModalBottomSheet<void>(
+                                showModalBottomSheet<dynamic>(
+                                      isScrollControlled: true,
                                       context: context,
-                                      builder: (BuildContext context) =>
-                                          FloorPlanPage(b.name),
+                                      builder: (BuildContext context){
+                                          return Container(
+                                            height: MediaQuery.of(context).size.height * 0.65, // scale height of bottom modal sheet
+                                            child: FloorPlanPage(b.name)
+                                          );
+                                      }
                                     );
                               },
                               child: const Icon(

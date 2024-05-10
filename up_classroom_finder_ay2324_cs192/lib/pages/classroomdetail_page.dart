@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // hardcoded assets list for locations with floorplan
 final floorplanImgList =[
-  "UP AECH",
+  "AECH",
 ];
 
 

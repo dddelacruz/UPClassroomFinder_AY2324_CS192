@@ -2,6 +2,8 @@
 //-- fix bookmark icon for floorplan page
 //-- needs improvement on the UI of the floor plan (make it a "window" like before)
 //-- add comments to schedule_page.dart
+//-- make the floorplan page for the search results and classroom detail the same
+//-- what are the arrows next to the floorplan for?
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
