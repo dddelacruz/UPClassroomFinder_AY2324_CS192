@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 // hardcoded assets list for locations with floorplan
-final floorplanImgList =[
+final floorplanImgList = [
   "AECH",
 ];
-
 
 class ClassroomDetailPage extends StatelessWidget {
   final Map<String, dynamic> upclassroom;
@@ -13,75 +12,142 @@ class ClassroomDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // classroom name
-      appBar: AppBar(
-        title: Text(upclassroom['CLASSROOM NUMBER']),
-      ),
-    
-      // classroom info
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: 14,
-          ),
-    
-          // floorplan
-
-          // check if florplan image exists
-          floorplanImgList.contains(upclassroom['LOCATION'])
-
-              // if file exists, load image
-              ? Dialog(
-                  child: Image.asset(
-                    "assets/floorplan_${upclassroom['LOCATION']}.jpg",
-                    height: 200,
-                    width: 200,
-                    fit: BoxFit.cover,
+    return ListView(
+      children: [
+        Container(
+            padding: EdgeInsets.all(16),
+            height: 600,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16), color: Colors.white),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 16),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 80,
+                          child: Text(
+                            upclassroom['NAME'],
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Icon(
+                          Icons.bookmark,
+                          size: 34,
+                          color: Color(0xff800000),
+                        )
+                      ]),
+                ), // heading and bookmark row
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width - 80,
+                          child: Text("Floor plan image")),
+                    ],
                   ),
-                )
-    
-              // file does not exist
-              : const Center(child: Text("No floorplan available as of now...")),
-          const SizedBox(
-            height: 14,
-          ),
-    
-          // address
-          ListTile(
-            leading: const CircleAvatar(
-              backgroundColor: Color(0xffffe9ea),
-              child:
-                  Icon(Icons.location_on, size: 18, color: Color(0xffd34343)),
-            ),
-            title: const Text("Address"),
-            subtitle: Text(upclassroom['LOCATION']),
-          ),
-    
-          // opening hours
-          ListTile(
-            leading: const CircleAvatar(
-              backgroundColor: Color(0xffffe9ea),
-              child: Icon(Icons.access_time_sharp,
-                  size: 18, color: Color(0xffd34343)),
-            ),
-            title: const Text("Opening Hours"),
-            subtitle: Text(upclassroom['OPENING HOURS']),
-          ),
-    
-          // transportation
-          ListTile(
-            leading: const CircleAvatar(
-              backgroundColor: Color(0xffffe9ea),
-              child: Icon(Icons.emoji_transportation,
-                  size: 18, color: Color(0xffd34343)),
-            ),
-            title: const Text("Transportation"),
-            subtitle: Text(upclassroom['TRANSPORTATION']),
-          ),
-        ],
-      ),
-    
+                ), // floorplan image row
+                Divider(),
+                Padding(
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Color(0xffffe9ea),
+                        child: Icon(Icons.location_on,
+                            size: 18, color: Color(0xffd34343)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Address",
+                              style: TextStyle(color: Color(0xff999999)),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 80,
+                              child: Text(upclassroom['ADDRESS'],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ), // address row
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Color(0xffffe9ea),
+                        child: Icon(Icons.access_time_sharp,
+                            size: 18, color: Color(0xffd34343)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Opening Hours",
+                                style: TextStyle(color: Color(0xff999999))),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 80,
+                              child: Text(upclassroom['OPENING HOURS'],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ), // hours row
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Color(0xffffe9ea),
+                        child: Icon(Icons.emoji_transportation,
+                            size: 18, color: Color(0xffd34343)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Transportation",
+                              style: TextStyle(color: Color(0xff999999)),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 80,
+                              child: Text(upclassroom['TRANSPORTATION'],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ), // transportation row
+                Divider(),
+              ],
+            ))
+      ],
     );
   }
 }
