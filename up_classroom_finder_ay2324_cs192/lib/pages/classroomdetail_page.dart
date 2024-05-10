@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_listofimages.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
 
 class ClassroomDetailPage extends StatelessWidget {
@@ -12,7 +13,6 @@ class ClassroomDetailPage extends StatelessWidget {
       children: [
         Container(
             padding: EdgeInsets.all(16),
-            height: 600,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16), color: Colors.white),
             child: Column(
@@ -44,13 +44,48 @@ class ClassroomDetailPage extends StatelessWidget {
                     children: [
                       SizedBox(
                           width: MediaQuery.of(context).size.width - 80,
-                          child: Center(child: Text("Floorplan Image"))),
+                          child: FloorPlanImagePageList(
+                              buildingName: upclassroom['LOCATION'],
+                              floorNumber: upclassroom['FLOOR NUMBER'])),
                     ],
                   ),
                 ), // floorplan image row
                 Divider(),
                 Padding(
                   padding: EdgeInsets.only(top: 8, bottom: 8),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Color(0xffffe9ea),
+                        child: Icon(Icons.numbers_sharp,
+                            size: 18, color: Color(0xffd34343)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Classroom and Floor Number",
+                                style: TextStyle(color: Color(0xff999999))),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 80,
+                              child: Text(
+                                  upclassroom['CLASSROOM NUMBER'] +
+                                      ' - ' +
+                                      upclassroom['FLOOR NUMBER'],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ), // classroom number and floor number row
+
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8),
                   child: Row(
                     children: [
                       CircleAvatar(

@@ -168,7 +168,7 @@ class SearchResultsPage extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(resultList[index]['NAME']),
-              subtitle: Text(resultList[index]['LOCATION']),
+              subtitle: Text(resultList[index]['CLASSROOM NUMBER']),
               trailing: Text(resultList[index]['FLOOR NUMBER']),
               onTap: () {
                 // Navigator.push(
