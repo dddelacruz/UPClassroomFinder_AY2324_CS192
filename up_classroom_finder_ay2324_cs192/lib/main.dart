@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'UP CLASSROOM FINDER',
         theme: ThemeData(
           primaryColor: const Color(0xFF8C0000), //Maroon

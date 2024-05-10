@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_listofimages.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
 
 class ClassroomDetailPage extends StatelessWidget {
   final Map<String, dynamic> upclassroom;

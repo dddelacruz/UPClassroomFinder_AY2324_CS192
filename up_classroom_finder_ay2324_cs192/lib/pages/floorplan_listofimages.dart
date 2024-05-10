@@ -38,6 +38,5 @@ class FloorPlanImagePageList extends StatelessWidget {
       default:
         return Center(child: Text("No floorplan available"));
     }
-    ;
   }
 }
