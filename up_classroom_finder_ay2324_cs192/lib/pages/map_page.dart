@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/bookmarks_page.dart';
@@ -68,6 +69,8 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  final  _focus = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +78,12 @@ class _MapPageState extends State<MapPage> {
         backgroundColor: Color(0xFF8C0000),
         title: CupertinoSearchTextField(
           controller: _searchController,
+          focusNode: _focus,
         ),
-        leading: _searchController.text.isNotEmpty
+
+        // show back button when search bar is being used
+        //leading: (_searchController.text.isNotEmpty)
+        leading: (_focus.hasFocus)
             ? IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
@@ -95,11 +102,13 @@ class _MapPageState extends State<MapPage> {
       ),
       body: Stack(
         children: <Widget>[
-          // Map image
+          // if search bar is not being used, show mapimage
           if (_resultList.isEmpty && _searchController.text == "")
             Positioned.fill(
               child: MapIMG(),
             ),
+
+          // if search bar is being used
           if (_resultList.isNotEmpty)
           Positioned(
             top: 0,
@@ -128,29 +137,45 @@ class SearchResultsPage extends StatelessWidget{
 
   @override
   build(BuildContext context) {
-    return Container(
-      color: searchController.text.isEmpty
-          ? Colors.transparent
-          : Colors.white,
-      child: ListView.builder(
-        itemCount: resultList.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(resultList[index]['NAME']),
-            subtitle: Text(resultList[index]['LOCATION']),
-            trailing: Text(resultList[index]['FLOOR NUMBER']),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClassroomDetailPage(
-                    upclassroom: resultList[index],
-                  ),
-                ),
-              );
-            },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool popped){
+        print(popped);
+        if(!popped){
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) => MapPage(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero, 
+            ),
           );
-        },
+        }
+      },
+      child: Container(
+        color: searchController.text.isEmpty
+            ? Colors.transparent
+            : Colors.white,
+        child: ListView.builder(
+          itemCount: resultList.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(resultList[index]['NAME']),
+              subtitle: Text(resultList[index]['LOCATION']),
+              trailing: Text(resultList[index]['FLOOR NUMBER']),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClassroomDetailPage(
+                      upclassroom: resultList[index],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
