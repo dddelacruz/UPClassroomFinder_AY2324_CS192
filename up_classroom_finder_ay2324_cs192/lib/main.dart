@@ -1,4 +1,5 @@
-//-- needs improvement on the back function of the search bar
+// TO DO:
+//-- fix bookmark icon for floorplan page
 //-- needs improvement on the UI of the floor plan (make it a "window" like before)
 
 import 'package:firebase_core/firebase_core.dart';
