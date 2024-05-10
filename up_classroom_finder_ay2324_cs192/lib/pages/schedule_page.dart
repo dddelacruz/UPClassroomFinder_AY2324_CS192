@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
-import 'package:up_classroom_finder_ay2324_cs192/main.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/bookmarks_page.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/classroomdetail_page.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/map_image.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/schedule_page.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
 
 
 class SchedulePage extends StatefulWidget {
-  const SchedulePage({Key? key});
+  const SchedulePage({super.key});
 
   @override
-  _SchedulePageState createState() => _SchedulePageState();
+  SchedulePageState createState() => SchedulePageState();
 }
 
-class _SchedulePageState extends State<SchedulePage> {
+class SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     var schedState = context.watch<MyAppState>();
@@ -31,7 +25,7 @@ class _SchedulePageState extends State<SchedulePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Color(0xff264B30),
+        backgroundColor: const Color(0xff264B30),
         leading: const Padding(
           padding: EdgeInsets.only(left: 10.0),
           child: Icon(
@@ -64,14 +58,14 @@ class _SchedulePageState extends State<SchedulePage> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("Back"),
+                    child: const Text("Back"),
                   ),
                   Expanded(child: Container()),
                   TextButton(
                     onPressed: () {
                       showAddDialog(schedState);
                     },
-                    child: Text("Add"),
+                    child: const Text("Add"),
                   )
                 ],
               ),
@@ -122,7 +116,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 child: Text(
                   schedule["location"]!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Color(0xff800000)),
+                  style: const TextStyle(color: Color(0xff800000)),
                 ),
               ),
             ),
@@ -131,7 +125,7 @@ class _SchedulePageState extends State<SchedulePage> {
       ],
     ),
     trailing: IconButton(
-      icon: Icon(Icons.delete),
+      icon: const Icon(Icons.delete),
       onPressed: onDelete,
     ),
   );

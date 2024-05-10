@@ -11,6 +11,7 @@ class MapIMG extends StatefulWidget {
   State<MapIMG> createState() => _MapIMGState();
 }
 
+// class mplementation of buildings from firebase collection
 class Building{
   late String name;
   late double lat;
@@ -25,9 +26,8 @@ class Building{
 
 
 class _MapIMGState extends State<MapIMG> {
+
   // get list of buildings from firebase
-  //  1. read data from buildings collection
-  //  2. convert to list of buildings
   Future<List> readBuildings() async{
     CollectionReference ref = FirebaseFirestore.instance.collection("buildings");
     
@@ -37,7 +37,6 @@ class _MapIMGState extends State<MapIMG> {
 
     return allData;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +56,27 @@ class _MapIMGState extends State<MapIMG> {
             final data = snapshot.data;
 
             if (data != null){
+              // extracts buildings from database
               final buildings = data.map((e) => Building(name: e['name'], lat: e['lat'], long: e['long']));
 
               return Scaffold(
                 body: FlutterMap(
+
                   options: const MapOptions(
-                    initialCenter: LatLng(14.64860,121.06855),
+                    initialCenter: LatLng(14.64860,121.06855), // sets initial center to be AECH
                     initialZoom: 18,
-                    interactionOptions: InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
+                    interactionOptions: InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag), // disables map rotation
                   ),
+
                   children: [
+                    
+                    // load map image from openstreetmap
                     TileLayer(
                       urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ),
                     MarkerLayer(
                       markers: 
+
                       // dynamically generate markers based on list of buildings
                         buildings.map((b) => 
                           Marker(
@@ -94,6 +99,7 @@ class _MapIMGState extends State<MapIMG> {
                             ),
                           )
                         ).toList(),
+
                     ),
                   ],
                 )

@@ -70,19 +70,21 @@ class MyAppState extends ChangeNotifier {
 }
 
 class NotesPage extends StatefulWidget {
+  NotesPage({super.key});
+
   @override
-  _NotesPage createState() => _NotesPage();
+  NotesPageState createState() => NotesPageState();
 }
 
-class _NotesPage extends State<NotesPage> {
+class NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     appState.loadNotes();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notes', style: TextStyle(color: Colors.white)),
-        backgroundColor: Color(0xff264B30),
+        title: const Text('Notes', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xff264B30),
       ),
       body: ListView.builder(
         itemCount: appState.notes.length,
@@ -90,7 +92,7 @@ class _NotesPage extends State<NotesPage> {
           return ListTile(
             title: Text(appState.notes[index]),
             trailing: IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               onPressed: () {
                 appState.removeNoteAtIndex(index); // Remove note
               },
@@ -102,7 +104,7 @@ class _NotesPage extends State<NotesPage> {
         onPressed: () {
           addNote(appState); // Add note
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -112,14 +114,14 @@ class _NotesPage extends State<NotesPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Note'),
+          title: const Text('Add Note'),
           content: TextField(
             autofocus: true,
             onSubmitted: (value) {
               appState.addNote(value); // Add note
               Navigator.pop(context); // Close dialog
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Enter your note',
             ),
           ),
