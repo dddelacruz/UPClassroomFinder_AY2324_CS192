@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
-// hardcoded assets list for locations with floorplan
-final floorplanImgList = [
-  "AECH",
-];
+import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
 
 class ClassroomDetailPage extends StatelessWidget {
   final Map<String, dynamic> upclassroom;
@@ -48,7 +44,7 @@ class ClassroomDetailPage extends StatelessWidget {
                     children: [
                       SizedBox(
                           width: MediaQuery.of(context).size.width - 80,
-                          child: Text("Floor plan image")),
+                          child: Center(child: Text("Floorplan Image"))),
                     ],
                   ),
                 ), // floorplan image row
