@@ -95,89 +95,109 @@ class _MapPageState extends State<MapPage> {
       ),
       body: Stack(
         children: <Widget>[
+          // Map image
           if (_resultList.isEmpty)
+            Positioned.fill(
+              child: MapIMG(),
+            ),
+          if (!_resultList.isEmpty)
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            child: Container(
-              color: _searchController.text.isEmpty
-                  ? Colors.transparent
-                  : Colors.white,
-              child: ListView.builder(
-                itemCount: _resultList.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_resultList[index]['NAME']),
-                    subtitle: Text(_resultList[index]['LOCATION']),
-                    trailing: Text(_resultList[index]['FLOOR NUMBER']),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ClassroomDetailPage(
-                            upclassroom: _resultList[index],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+            child: SearchResultsPage(_searchController, _resultList),
           ),
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: BottomAppBar(
-              color: Color(0xFF8C0000),
-              shape: const CircularNotchedRectangle(),
-              child: IconTheme(
-                data: IconThemeData(color: Colors.white),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => NotesPage()),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.schedule),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SchedulePage()),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.bookmark),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BookmarksPage()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: NavigationBar(),
           ),
-          // Map image
-            Positioned.fill(
-              child: MapIMG(),
-            )
         ],
+      ),
+    );
+  }
+}
+
+class SearchResultsPage extends StatelessWidget{
+  const SearchResultsPage(this.searchController, this.resultList);
+
+  final List resultList;
+  final TextEditingController searchController;
+
+  @override
+  build(BuildContext context) {
+    return Container(
+      color: searchController.text.isEmpty
+          ? Colors.transparent
+          : Colors.white,
+      child: ListView.builder(
+        itemCount: resultList.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(resultList[index]['NAME']),
+            subtitle: Text(resultList[index]['LOCATION']),
+            trailing: Text(resultList[index]['FLOOR NUMBER']),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ClassroomDetailPage(
+                    upclassroom: resultList[index],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class NavigationBar extends StatelessWidget{
+  @override
+  build(BuildContext context){
+    return BottomAppBar(
+      color: Color(0xFF8C0000),
+      shape: const CircularNotchedRectangle(),
+      child: IconTheme(
+        data: IconThemeData(color: Colors.white),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotesPage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.schedule),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SchedulePage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.bookmark),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BookmarksPage()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
