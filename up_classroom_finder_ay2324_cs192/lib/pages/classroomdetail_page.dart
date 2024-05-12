@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_listofimages.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
 
 class ClassroomDetailPage extends StatelessWidget {
   final Map<String, dynamic> upclassroom;
@@ -10,18 +8,16 @@ class ClassroomDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bmState = context.watch<MyAppState>();
-    bmState.loadBookmarks;
     return ListView(
       children: [
         Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16), color: Colors.white),
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                  padding: EdgeInsets.only(bottom: 16),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -29,29 +25,19 @@ class ClassroomDetailPage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width - 80,
                           child: Text(
                             upclassroom['NAME'],
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        // Bookmark button section
-                        IconButton(
-                          icon: Icon(
-                            bmState.activeBookmarks.contains(upclassroom['NAME']) ? Icons.bookmark : Icons.bookmark_border,
-                            size: 34,
-                            color: const Color(0xff800000),
-                          ),
-                          onPressed: () {
-                            if (bmState.activeBookmarks.contains(upclassroom['NAME'])) {
-                              bmState.removeBookmark(upclassroom['NAME']); // Remove the bookmark if shaded
-                            } else {
-                              bmState.addBookmark(upclassroom['NAME']); // Add the bookmark if not shaded
-                            }
-                          },
-                        ),
+                        Icon(
+                          Icons.bookmark,
+                          size: 34,
+                          color: Color(0xff800000),
+                        )
                       ]),
                 ), // heading and bookmark row
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(bottom: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -63,23 +49,23 @@ class ClassroomDetailPage extends StatelessWidget {
                     ],
                   ),
                 ), // floorplan image row
-                const Divider(),
+                Divider(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
                   child: Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 16,
                         backgroundColor: Color(0xffffe9ea),
                         child: Icon(Icons.numbers_sharp,
                             size: 18, color: Color(0xffd34343)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.only(left: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Classroom and Floor Number",
+                            Text("Classroom and Floor Number",
                                 style: TextStyle(color: Color(0xff999999))),
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 80,
@@ -88,7 +74,7 @@ class ClassroomDetailPage extends StatelessWidget {
                                       ' - ' +
                                       upclassroom['FLOOR NUMBER'],
                                   style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
@@ -98,21 +84,21 @@ class ClassroomDetailPage extends StatelessWidget {
                 ), // classroom number and floor number row
 
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(bottom: 8),
                   child: Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 16,
                         backgroundColor: Color(0xffffe9ea),
                         child: Icon(Icons.location_on,
                             size: 18, color: Color(0xffd34343)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.only(left: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Address",
                               style: TextStyle(color: Color(0xff999999)),
                             ),
@@ -120,7 +106,7 @@ class ClassroomDetailPage extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 80,
                               child: Text(upclassroom['ADDRESS'],
                                   style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
@@ -129,27 +115,27 @@ class ClassroomDetailPage extends StatelessWidget {
                   ),
                 ), // address row
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(bottom: 8),
                   child: Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 16,
                         backgroundColor: Color(0xffffe9ea),
                         child: Icon(Icons.access_time_sharp,
                             size: 18, color: Color(0xffd34343)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.only(left: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Opening Hours",
+                            Text("Opening Hours",
                                 style: TextStyle(color: Color(0xff999999))),
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 80,
                               child: Text(upclassroom['OPENING HOURS'],
                                   style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
@@ -158,21 +144,21 @@ class ClassroomDetailPage extends StatelessWidget {
                   ),
                 ), // hours row
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(bottom: 8),
                   child: Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 16,
                         backgroundColor: Color(0xffffe9ea),
                         child: Icon(Icons.emoji_transportation,
                             size: 18, color: Color(0xffd34343)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.only(left: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Transportation",
                               style: TextStyle(color: Color(0xff999999)),
                             ),
@@ -180,7 +166,7 @@ class ClassroomDetailPage extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 80,
                               child: Text(upclassroom['TRANSPORTATION'],
                                   style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
@@ -188,7 +174,7 @@ class ClassroomDetailPage extends StatelessWidget {
                     ],
                   ),
                 ), // transportation row
-                const Divider(),
+                Divider(),
               ],
             ))
       ],

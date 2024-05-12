@@ -36,7 +36,7 @@ class FloorPlanImagePageList extends StatelessWidget {
         return Center(child: Image.asset(floorplanImagePathList[6]));
       // INSERT OTHER FLOORPLANS
       default:
-        return const Center(child: Text("No floorplan available"));
+        return Center(child: Text("No floorplan available"));
     }
   }
 }
