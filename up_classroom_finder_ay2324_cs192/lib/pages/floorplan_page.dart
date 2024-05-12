@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 
 // hardcoded assets list for locations with floorplan
@@ -100,7 +101,7 @@ class NotesRow extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NotesPage()),
+          MaterialPageRoute(builder: (context) => const NotesPage()),
         );
       },
       child: const Text("Notes"),

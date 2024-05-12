@@ -9,11 +9,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/map_page.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: 
+   DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
