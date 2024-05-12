@@ -1,11 +1,11 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_page.dart';
-import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/classroomdetail_page.dart';
 
 class BookmarksPage extends StatefulWidget {
   const BookmarksPage({super.key});
-
+  
   @override
   BookmarksPageState createState() => BookmarksPageState();
 }
@@ -15,17 +15,17 @@ class BookmarksPageState extends State<BookmarksPage> {
   Widget build(BuildContext context) {
     var bmState = context.watch<MyAppState>();
     bmState.loadBookmarks();
-
+  
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bookmarks',
+        title: const Text('Bookmarks',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             )),
-        backgroundColor: Color(0xff264B30),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
+        backgroundColor: const Color(0xff264B30),
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 10.0),
           child: Icon(
             Icons.bookmark,
             color: Color(0xff800000),
@@ -40,24 +40,27 @@ class BookmarksPageState extends State<BookmarksPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, top: 10),
-                child: ListView(
-                  children: [
-                    // Conditionally build ListTile based on active bookmarks
-                    if (bmState.activeBookmarks.contains('AECH'))
-                      ListTile(
-                        leading: const Icon(Icons.arrow_drop_down),
-                        title: Text("AECH"),
+                child: ListView.builder(
+                  itemCount: bmState.activeBookmarks.length,
+                  itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: const Icon(Icons.arrow_drop_down),
+                        title: Text(bmState.activeBookmarks[index]),
                         visualDensity:
                             const VisualDensity(horizontal: 0, vertical: -4),
                         onTap: () {
-                          showModalBottomSheet<void>(
+                          showModalBottomSheet<dynamic>(
+                            isScrollControlled: true,
                             context: context,
-                            builder: (BuildContext context) =>
-                                FloorPlanPage("AECH"),
-                          );
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.65, // scale height of bottom modal sheet\
+                                child: ClassroomDetailPage(bmState.getClassrooomDetail(bmState.activeBookmarks[index])),
+                              );
+                            });
                         },
-                      ),
-                  ],
+                  );
+                },
                 ),
               ),
             ),
@@ -66,7 +69,7 @@ class BookmarksPageState extends State<BookmarksPage> {
               child: Row(
                 children: [
                   TextButton(
-                    child: Text("Back"),
+                    child: const Text("Back"),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -74,15 +77,16 @@ class BookmarksPageState extends State<BookmarksPage> {
                   Expanded(
                     child: Container(),
                   ),
+                  /*
                   TextButton(
                     onPressed: () {
                       setState(() {
                         // Remove 'AECH' from active bookmarks
-                        bmState.removeBookmark('AECH');
+                        bmState.removeBookmark(bmState.activeBookmarks[index]['NAME']);
                       });
                     },
-                    child: Text("Delete"),
-                  ),
+                    child: const Text("Delete"),
+                  ),*/
                 ],
               ),
             ),
@@ -91,4 +95,5 @@ class BookmarksPageState extends State<BookmarksPage> {
       ),
     );
   }
+  
 }

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/bookmarks_page.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/classroomdetail_page.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/map_image.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/schedule_page.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -97,7 +99,7 @@ class _MapPageState extends State<MapPage> {
                   searchResultList();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => MapPage()),
+                    MaterialPageRoute(builder: (context) => const MapPage()),
                   );
                 },
               )
@@ -142,6 +144,9 @@ class SearchResultsPage extends StatelessWidget {
 
   @override
   build(BuildContext context) {
+    // update _resultList in context.dart
+    var appState = context.watch<MyAppState>();
+    appState.updateResultList(resultList);
     // if back button is pressed, go back to showing map image
     return PopScope(
       canPop: false,
@@ -150,7 +155,7 @@ class SearchResultsPage extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             PageRouteBuilder(
-              pageBuilder: (context, animation1, animation2) => MapPage(),
+              pageBuilder: (context, animation1, animation2) => const MapPage(),
               transitionDuration: Duration.zero,
               reverseTransitionDuration: Duration.zero,
             ),
@@ -181,7 +186,7 @@ class SearchResultsPage extends StatelessWidget {
                     isScrollControlled: true,
                     context: context,
                     builder: (BuildContext context) {
-                      return Container(
+                      return SizedBox(
                         height: MediaQuery.of(context).size.height *
                             0.65, // scale height of bottom modal sheet
                         child: ClassroomDetailPage(resultList[index]),
@@ -216,7 +221,7 @@ class NavigationBar extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotesPage()),
+                  MaterialPageRoute(builder: (context) => const NotesPage()),
                 );
               },
             ),

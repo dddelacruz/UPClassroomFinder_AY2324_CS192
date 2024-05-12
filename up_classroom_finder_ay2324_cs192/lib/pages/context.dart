@@ -1,9 +1,31 @@
+// context.dart contains information/state of important variables such as saved notes, schedule, and bookmarks
+// also included is the shared preferences implementation for local storage
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class MyAppState extends ChangeNotifier {
-  List<String> notes = [];
+  // _resultList from MapPage (used in bookmarks_page.dart)
+  List _resultList = []; // list of filtered results from database, added so that bookmarks_page can see _resultList
+  
+  List get resultList => _resultList;
+
+  void updateResultList(List newList) {
+    _resultList = newList;
+    notifyListeners();
+  }
+
+  dynamic getClassrooomDetail(String name){
+    for (int i = 0; i < _resultList.length; i++) {
+      if (name == _resultList[i]['NAME']){
+        return _resultList[i];
+      }
+    }
+  }
+
+  // Notes state is saved in local storage using shared preferences
+  List<String> notes = []; // contains saved notes in map page
 
   // Load notes from shared preferences
   Future<void> loadNotes() async {
@@ -21,27 +43,25 @@ class MyAppState extends ChangeNotifier {
     await prefs.setStringList('notes', notes);
   }
 
-  // Add a note
   void addNote(String note) {
     notes.add(note);
     saveNotes();
     notifyListeners();
   }
 
-  // Remove a note
   void removeNoteAtIndex(int index) {
     notes.removeAt(index);
     saveNotes();
     notifyListeners();
   }
 
-  // Bookmark State
-  List<String> activeBookmarks = []; // Maintain a list of active bookmarks
+  // Bookmarks state is saved in local storage using shared preferences
+  List<String> activeBookmarks = []; // maintain a list of active bookmarks
 
   // Load activeBookmarks from shared preferences
   Future<void> loadBookmarks() async {
-    SharedPreferences prefs_bm = await SharedPreferences.getInstance();
-    List<String>? savedBookmarks = prefs_bm.getStringList('activeBookmarks');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedBookmarks = prefs.getStringList('activeBookmarks');
     if (savedBookmarks != null) {
       activeBookmarks = savedBookmarks;
     }
@@ -50,29 +70,26 @@ class MyAppState extends ChangeNotifier {
 
   // Save activeBookmarks to shared preferences
   Future<void> saveBookmark() async {
-    SharedPreferences prefs_bm = await SharedPreferences.getInstance();
-    await prefs_bm.setStringList('activeBookmarks', activeBookmarks);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('activeBookmarks', activeBookmarks);
   }
 
-  // Add a bookmark
   void addBookmark(String bookmark) {
     activeBookmarks.add(bookmark);
     saveBookmark();
     notifyListeners();
   }
 
-  // Remove a bookmark
   void removeBookmark(String bookmark) {
     activeBookmarks.remove(bookmark);
     saveBookmark();
     notifyListeners();
   }
 
-
-  // Store schedule locally
+  // Schedule state is saved in local storage using shared preferences
   List<Map<String, String>> schedules = [];
 
-  // Load notes from shared preferences
+  // Load schedule from shared preferences
   Future<void> loadSched() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? schedulesJsonFromPrefs = prefs.getString('schedules');
@@ -91,14 +108,12 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Add a sched
   void addSched(Map<String, String> sched) {
     schedules.add(sched);
     saveSched();
     notifyListeners();
   }
 
-  // Remove a sched
   void removeSchedAtIndex(int index) {
     schedules.removeAt(index);
     saveSched();
