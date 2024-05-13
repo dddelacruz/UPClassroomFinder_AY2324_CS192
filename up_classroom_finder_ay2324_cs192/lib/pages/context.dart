@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 
 class MyAppState extends ChangeNotifier {
   // _resultList from MapPage (used in bookmarks_page.dart)
@@ -24,9 +25,10 @@ class MyAppState extends ChangeNotifier {
     }
   }
 
+
   // Notes state is saved in local storage using shared preferences
   List<String> notes = []; // contains saved notes in map page
-
+  
   // Load notes from shared preferences
   Future<void> loadNotes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

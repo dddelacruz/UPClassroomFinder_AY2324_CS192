@@ -18,23 +18,21 @@ class SchedulePageState extends State<SchedulePage> {
     schedState.loadSched();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Schedule',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         backgroundColor: const Color(0xff264B30),
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 10.0),
-          child: Icon(
-            Icons.calendar_today,
-            color: Color(0xff800000),
-            size: 35,
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        titleSpacing: 10,
+        title: const Row(
+          children: [
+            Icon(Icons.calendar_today, color: Color(0xff800000), size: 35,), 
+            SizedBox(width: 5),
+            Text('Schedule', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)),
+          ],
+        ),
+        titleSpacing: 10
       ),
       body: SafeArea(
         child: Column(
@@ -50,28 +48,14 @@ class SchedulePageState extends State<SchedulePage> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Back"),
-                  ),
-                  Expanded(child: Container()),
-                  TextButton(
-                    onPressed: () {
-                      showAddDialog(schedState);
-                    },
-                    child: const Text("Add"),
-                  )
-                ],
-              ),
-            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showAddDialog(schedState);
+        },
+        child: const Icon(Icons.add_circle_outline),
       ),
     );
   }
