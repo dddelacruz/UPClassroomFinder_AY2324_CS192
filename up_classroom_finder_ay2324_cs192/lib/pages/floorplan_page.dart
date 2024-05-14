@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:up_classroom_finder_ay2324_cs192/pages/building_listofimage.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
 
 // hardcoded assets list for locations with floorplan
-final floorplanImgList =[
-  "AECH",
-];
+final floorplanImgList = ["AECH", "EEEI", "CSLib", "NIGS", "DMMME"];
 
 class FloorPlanPage extends StatelessWidget {
   FloorPlanPage(this.location, {super.key});
@@ -16,7 +16,7 @@ class FloorPlanPage extends StatelessWidget {
 
   final db = FirebaseFirestore.instance;
 
-  Future readBuildingInfo() async{
+  Future readBuildingInfo() async {
     final docRef = db.collection("buildinginfo").doc(location);
 
     return await docRef.get();
@@ -24,57 +24,55 @@ class FloorPlanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // get building info from firebase 
+    // get building info from firebase
     readBuildingInfo();
 
     return FutureBuilder(
-      future: readBuildingInfo(),
-      builder: (builder, snapshot){
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text(
-                'Failed to load floorplan.',
-                style: TextStyle(fontSize: 18),
-              ),
-            );  
-            
-          } else if (snapshot.hasData) {
-            final data = snapshot.data;
+        future: readBuildingInfo(),
+        builder: (builder, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text(
+                  'Failed to load floorplan.',
+                  style: TextStyle(fontSize: 18),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              final data = snapshot.data;
 
-            if (data != null){
-              return ListView(
-                children: [
-                  Container(
+              if (data != null) {
+                return ListView(
+                  children: [
+                    Container(
                       padding: const EdgeInsets.all(16),
                       height: 600,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16), color: Colors.white),
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white),
                       child: BuildingInfo(location, data),
-                      ),
-                ],
-              );
+                    ),
+                  ],
+                );
+              }
             }
           }
-        }
 
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }  
-    );
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 }
 
-
-class BuildingInfo extends StatelessWidget{
+class BuildingInfo extends StatelessWidget {
   const BuildingInfo(this.location, this.data, {super.key});
 
   final String location;
   final dynamic data;
 
   @override
-  build(BuildContext context){
+  build(BuildContext context) {
     return Column(
       children: [
         HeadingRow(location), // heading and bookmark row
@@ -140,9 +138,8 @@ class TransportationRow extends StatelessWidget {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 80,
-                  child: Text(
-                    data['transportation'],
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(data['transportation'],
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -178,14 +175,12 @@ class HoursRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Opening Hours",
-                  style: TextStyle(color: Color(0xff999999))),
+                const Text("Opening Hours",
+                    style: TextStyle(color: Color(0xff999999))),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 80,
-                  child: Text(
-                    data['opening hours'],
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(data['opening hours'],
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -213,8 +208,7 @@ class AddressRow extends StatelessWidget {
           const CircleAvatar(
             radius: 16,
             backgroundColor: Color(0xffffe9ea),
-            child: Icon(Icons.location_on,
-                size: 18, color: Color(0xffd34343)),
+            child: Icon(Icons.location_on, size: 18, color: Color(0xffd34343)),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 16),
@@ -244,7 +238,10 @@ class AddressRow extends StatelessWidget {
 }
 
 class FloorplanImgRow extends StatelessWidget {
-  const FloorplanImgRow(this.location, {super.key,});
+  const FloorplanImgRow(
+    this.location, {
+    super.key,
+  });
 
   final String location;
 
@@ -266,15 +263,16 @@ class FloorplanImgRow extends StatelessWidget {
           //Text("Floor plan image"),
           floorplanImgList.contains(location)
               // if file exists, load image
-              ? Center(
-                  child: Image.asset(
-                    "assets/floorplan_$location.jpg",
-                    width: MediaQuery.of(context).size.width - 32,
-                    fit: BoxFit.contain,
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width - 80,
+                  child: InstaImageViewer(
+                    child: BuildingImageList(
+                      location: location,
+                    ),
                   ),
                 )
               // file does not exist
-              : const Center(child: Text("No floorplan available as of now...")),
+              : const Center(child: Text("No floorplan available")),
 
           const SizedBox(
             height: 14,
@@ -292,35 +290,35 @@ class FloorplanImgRow extends StatelessWidget {
   }
 }
 
-class HeadingRow extends StatelessWidget{
+class HeadingRow extends StatelessWidget {
   const HeadingRow(this.location, {super.key});
 
   final String location;
 
-  @override 
-  build(BuildContext context){
+  @override
+  build(BuildContext context) {
     var bmState = context.watch<MyAppState>();
     bmState.loadBookmarks();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width - 80,
+          child: Text(
             location,
-            style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const Icon(
-            Icons.bookmark,
-            size: 34,
-            color: Color(0xff800000),
-          ),
+        ),
+        const Icon(
+          Icons.bookmark,
+          size: 34,
+          color: Color(0xff800000),
+        ),
 
-          // implementation for bookmarks button is a Future function
-          // needs to be fixed in order for floorplan page to load properly
-          /* IconButton(
+        // implementation for bookmarks button is a Future function
+        // needs to be fixed in order for floorplan page to load properly
+        /* IconButton(
             icon: Icon(
               bmState.activeBookmarks.contains('AECH')
                   ? Icons.bookmark
@@ -338,7 +336,7 @@ class HeadingRow extends StatelessWidget{
               }
             },
           ), */
-        ]),
+      ]),
     );
   }
 }

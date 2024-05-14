@@ -87,6 +87,9 @@ flutter:
    - assets/floorplan_NIGS_2ND.jpg
    - assets/floorplan_NIGS_BASEMENT.jpg
    - assets/floorplan_NIGS_GROUND.jpg
+   - assets/building_AECH.jpg
+   - assets/building_DMMME.jpg
+   - assets/building_NIGS.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
