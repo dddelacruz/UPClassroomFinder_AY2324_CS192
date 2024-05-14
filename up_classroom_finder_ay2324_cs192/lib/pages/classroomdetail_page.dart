@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:provider/provider.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/floorplan_listofimages.dart';
 import 'package:up_classroom_finder_ay2324_cs192/pages/context.dart';
@@ -36,15 +37,21 @@ class ClassroomDetailPage extends StatelessWidget {
                         // Bookmark button section
                         IconButton(
                           icon: Icon(
-                            bmState.activeBookmarks.contains(upclassroom['NAME']) ? Icons.bookmark : Icons.bookmark_border,
+                            bmState.activeBookmarks
+                                    .contains(upclassroom['NAME'])
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
                             size: 34,
                             color: const Color(0xff800000),
                           ),
                           onPressed: () {
-                            if (bmState.activeBookmarks.contains(upclassroom['NAME'])) {
-                              bmState.removeBookmark(upclassroom['NAME']); // Remove the bookmark if shaded
+                            if (bmState.activeBookmarks
+                                .contains(upclassroom['NAME'])) {
+                              bmState.removeBookmark(upclassroom[
+                                  'NAME']); // Remove the bookmark if shaded
                             } else {
-                              bmState.addBookmark(upclassroom['NAME']); // Add the bookmark if not shaded
+                              bmState.addBookmark(upclassroom[
+                                  'NAME']); // Add the bookmark if not shaded
                             }
                           },
                         ),
@@ -57,9 +64,10 @@ class ClassroomDetailPage extends StatelessWidget {
                     children: [
                       SizedBox(
                           width: MediaQuery.of(context).size.width - 80,
-                          child: FloorPlanImagePageList(
-                              buildingName: upclassroom['LOCATION'],
-                              floorNumber: upclassroom['FLOOR NUMBER'])),
+                          child: InstaImageViewer(
+                              child: FloorPlanImagePageList(
+                                  buildingName: upclassroom['LOCATION'],
+                                  floorNumber: upclassroom['FLOOR NUMBER']))),
                     ],
                   ),
                 ), // floorplan image row
@@ -87,8 +95,8 @@ class ClassroomDetailPage extends StatelessWidget {
                                   upclassroom['CLASSROOM NUMBER'] +
                                       ' - ' +
                                       upclassroom['FLOOR NUMBER'],
-                                  style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
@@ -119,8 +127,8 @@ class ClassroomDetailPage extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 80,
                               child: Text(upclassroom['ADDRESS'],
-                                  style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
@@ -148,8 +156,8 @@ class ClassroomDetailPage extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 80,
                               child: Text(upclassroom['OPENING HOURS'],
-                                  style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
@@ -179,8 +187,8 @@ class ClassroomDetailPage extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 80,
                               child: Text(upclassroom['TRANSPORTATION'],
-                                  style:
-                                      const TextStyle(fontWeight: FontWeight.bold)),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
                             )
                           ],
                         ),
