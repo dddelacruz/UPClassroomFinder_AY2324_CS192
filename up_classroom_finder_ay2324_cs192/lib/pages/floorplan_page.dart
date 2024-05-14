@@ -46,7 +46,6 @@ class FloorPlanPage extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(16),
-                      height: 600,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           color: Colors.white),
@@ -78,6 +77,7 @@ class BuildingInfo extends StatelessWidget {
         HeadingRow(location), // heading and bookmark row
         FloorplanImgRow(location), // floorplan image row
         const Divider(),
+        BuildingNameRow(data: data),
         AddressRow(data: data), // address row
         HoursRow(data: data), // hours row
         TransportationRow(data: data), // transportation row
@@ -191,6 +191,52 @@ class HoursRow extends StatelessWidget {
   }
 }
 
+class BuildingNameRow extends StatelessWidget {
+  const BuildingNameRow({
+    super.key,
+    required this.data,
+  });
+
+  final dynamic data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: Row(
+        children: [
+          const CircleAvatar(
+            radius: 16,
+            backgroundColor: Color(0xffffe9ea),
+            child: Icon(Icons.info_outline, size: 18, color: Color(0xffd34343)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Building Name",
+                    style: TextStyle(color: Color(0xff999999)),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 80,
+                    child: Text(
+                      data['name'],
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class AddressRow extends StatelessWidget {
   const AddressRow({
     super.key,
@@ -202,7 +248,7 @@ class AddressRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
           const CircleAvatar(
