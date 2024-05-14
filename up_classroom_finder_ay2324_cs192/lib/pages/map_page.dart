@@ -51,7 +51,12 @@ class _MapPageState extends State<MapPage> {
     if (_searchController.text != "") {
       for (var clientSnapshot in _allData) {
         var name = clientSnapshot['NAME'].toString().toLowerCase();
+        var number =
+            clientSnapshot['CLASSROOM NUMBER'].toString().toLowerCase();
         if (name.contains(_searchController.text.toLowerCase())) {
+          showResults.add(clientSnapshot);
+        }
+        if (number.contains(_searchController.text.toLowerCase())) {
           showResults.add(clientSnapshot);
         }
       }
