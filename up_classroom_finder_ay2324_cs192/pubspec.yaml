@@ -78,7 +78,10 @@ flutter:
   assets:
    - assets/map.jpg
    - assets/floorplan_AECH_2ND.jpg
-   - assets/floorplan_DMMME_1ST.jpg
+   - assets/floorplan_DMMME_UGF.jpg
+   - assets/floorplan_DMME_LGF.jpg
+   - assets/floorplan_DMMME_2F.jpg
+   - assets/floorplan_DMMME_3F.jpg
    - assets/floorplan_EEEI_1ST.jpg
    - assets/floorplan_EEEI_2ND.jpg
    - assets/floorplan_NIGS_2ND.jpg
