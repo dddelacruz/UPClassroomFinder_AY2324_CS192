@@ -38,7 +38,7 @@ class ClassroomDetailPage extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             bmState.activeBookmarks
-                                    .contains(upclassroom['NAME'])
+                                    .contains(upclassroom['CLASSROOM NUMBER'])
                                 ? Icons.bookmark
                                 : Icons.bookmark_border,
                             size: 34,
@@ -46,12 +46,12 @@ class ClassroomDetailPage extends StatelessWidget {
                           ),
                           onPressed: () {
                             if (bmState.activeBookmarks
-                                .contains(upclassroom['NAME'])) {
+                                .contains(upclassroom['CLASSROOM NUMBER'])) {
                               bmState.removeBookmark(upclassroom[
-                                  'NAME']); // Remove the bookmark if shaded
+                                  'CLASSROOM NUMBER']); // Remove the bookmark if shaded
                             } else {
                               bmState.addBookmark(upclassroom[
-                                  'NAME']); // Add the bookmark if not shaded
+                                  'CLASSROOM NUMBER']); // Add the bookmark if not shaded
                             }
                           },
                         ),

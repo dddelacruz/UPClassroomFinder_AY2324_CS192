@@ -41,10 +41,11 @@ class SchedulePageState extends State<SchedulePage> {
               child: ListView.builder(
                 itemCount: schedState.schedules.length,
                 itemBuilder: (context, index) {
+                  // Builds the list of saved schedules in context.dart
                   final schedule = schedState.schedules[index];
                   return buildClassRow(schedule, () {
                     schedState.removeSchedAtIndex(index);
-                  });
+                  }, schedState, index);
                 },
               ),
             ),
@@ -60,61 +61,157 @@ class SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  Widget buildClassRow(Map<String, String> schedule, Function() onDelete) {
-  return ListTile(
-    title: Table(
-      children: [
-        TableRow(children: <Widget>[
-          TableCell(
-            child: Container(
-              height: 35,
-              alignment: Alignment.center,
-              child: Text(schedule["time"]!, textAlign: TextAlign.center),
+  // Builds the listtile/row of the added schedule 
+  Widget buildClassRow(Map<String, String> schedule, Function() onDelete, MyAppState appState, int index) {
+  return GestureDetector(
+    onTap: () {
+      showScheduleOptions(context, onDelete, appState, index);
+    },
+    child: ListTile(
+      title: Table(
+        children: [
+          TableRow(children: <Widget>[
+            TableCell(
+              child: Container(
+                height: 35,
+                alignment: Alignment.center,
+                child: Text(schedule["time"]!, textAlign: TextAlign.center),
+              ),
             ),
-          ),
-          TableCell(
-            child: Container(
-              height: 35,
-              alignment: Alignment.center,
-              child: Text(schedule["day"]!, textAlign: TextAlign.center),
+            TableCell(
+              child: Container(
+                height: 35,
+                alignment: Alignment.center,
+                child: Text(schedule["day"]!, textAlign: TextAlign.center),
+              ),
             ),
-          ),
-          TableCell(
-            child: Container(
-              height: 35,
-              alignment: Alignment.center,
-              child: Text(schedule["subject"]!, textAlign: TextAlign.center),
+            TableCell(
+              child: Container(
+                height: 35,
+                alignment: Alignment.center,
+                child: Text(schedule["subject"]!, textAlign: TextAlign.center),
+              ),
             ),
-          ),
-          TableCell(
-            child: Container(
-              height: 35,
-              alignment: Alignment.center,
-              child: TextButton(
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) => FloorPlanPage('AECH'),
-                  );
-                },
-                child: Text(
-                  schedule["location"]!,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Color(0xff800000)),
+            TableCell(
+              child: Container(
+                height: 35,
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      // To be changed to classroomdetail
+                      builder: (BuildContext context) => FloorPlanPage('AECH'),
+                    );
+                  },
+                  child: Text(
+                    schedule["location"]!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Color(0xff800000)),
+                  ),
                 ),
               ),
             ),
-          ),
-        ]),
-      ],
-    ),
-    trailing: IconButton(
-      icon: const Icon(Icons.delete),
-      onPressed: onDelete,
+          ]),
+        ],
+      ),
     ),
   );
 }
 
+// Bottomsheet shown when the listtile is pressed, showing the edit and delete options
+void showScheduleOptions(BuildContext context, Function() onDelete, MyAppState appState, int index) {
+  showModalBottomSheet<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit Schedule'),
+              onTap: () {
+                // Edit button is selected, redirect to editSched()
+                Navigator.pop(context);
+                editSched(context, appState, index);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('Delete Schedule'),
+              onTap: onDelete,
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+// Edit dialog shown when edit button is pressed
+void editSched(BuildContext context, MyAppState appState, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Edit Schedule"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: 'Time'),
+                controller: TextEditingController(text: appState.schedules[index]["time"]),
+                onChanged: (value) {
+                  appState.schedules[index]["time"] = value; // Update sched in context.dart
+                  appState.saveSched();                      // Save new sched, important: notifylisteners
+                }
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Day'),
+                controller: TextEditingController(text: appState.schedules[index]["day"]),
+                onChanged: (value) {
+                  appState.schedules[index]["day"] = value;  // Update sched in context.dart
+                  appState.saveSched();                      // Save new sched, important: notifylisteners
+                }
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Subject'),
+                controller: TextEditingController(text: appState.schedules[index]["subject"]),
+                onChanged: (value) {
+                  appState.schedules[index]["subject"] = value;  // Update sched in context.dart
+                  appState.saveSched();                          // Save new sched, important: notifylisteners
+                }
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Location'),
+                controller: TextEditingController(text: appState.schedules[index]["location"]),
+                onChanged: (value) {
+                  appState.schedules[index]["location"] = value;  // Update sched in context.dart
+                  appState.saveSched();                           // Save new sched, important: notifylisteners
+                }
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Add dialog shown when add button is pressed
   void showAddDialog(MyAppState schedState) {
     showDialog(
       context: context,
@@ -146,15 +243,15 @@ class SchedulePageState extends State<SchedulePage> {
             TextButton(
               onPressed: () {
                 setState(() {
-                  schedState.addSched(_newSchedule);
+                  schedState.addSched(_newSchedule);       // Save the new sched in schedules in context.dart
                 });
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
               child: const Text("Add"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
               child: const Text("Cancel"),
             ),

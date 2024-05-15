@@ -19,7 +19,7 @@ class MyAppState extends ChangeNotifier {
 
   dynamic getClassrooomDetail(String name) {
     for (int i = 0; i < _resultList.length; i++) {
-      if (name == _resultList[i]['NAME']) {
+      if (name == _resultList[i]['CLASSROOM NUMBER']) {
         return _resultList[i];
       }
     }

@@ -45,7 +45,8 @@ class BookmarksPageState extends State<BookmarksPage> {
                   itemBuilder: (context, index) {
                   return ListTile(
                     leading: const Icon(Icons.arrow_drop_down),
-                        title: Text(bmState.activeBookmarks[index]),
+                        title: Text(bmState.getClassrooomDetail(bmState.activeBookmarks[index])["NAME"] + 
+                        " (" + bmState.activeBookmarks[index] + ")"),
                         visualDensity:
                             const VisualDensity(horizontal: 0, vertical: -4),
                         // onTap() is copied from map_page.dart, subject to change.
