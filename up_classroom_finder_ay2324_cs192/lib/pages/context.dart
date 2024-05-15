@@ -4,12 +4,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:up_classroom_finder_ay2324_cs192/pages/notes_page.dart';
 
 class MyAppState extends ChangeNotifier {
   // _resultList from MapPage (used in bookmarks_page.dart)
-  List _resultList = []; // list of filtered results from database, added so that bookmarks_page can see _resultList
-  
+  List _resultList =
+      []; // list of filtered results from database, added so that bookmarks_page can see _resultList
+
   List get resultList => _resultList;
 
   void updateResultList(List newList) {
@@ -17,18 +17,17 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  dynamic getClassrooomDetail(String name){
+  dynamic getClassrooomDetail(String name) {
     for (int i = 0; i < _resultList.length; i++) {
-      if (name == _resultList[i]['NAME']){
+      if (name == _resultList[i]['NAME']) {
         return _resultList[i];
       }
     }
   }
 
-
   // Notes state is saved in local storage using shared preferences
   List<String> notes = []; // contains saved notes in map page
-  
+
   // Load notes from shared preferences
   Future<void> loadNotes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -97,7 +96,8 @@ class MyAppState extends ChangeNotifier {
     String? schedulesJsonFromPrefs = prefs.getString('schedules');
     if (schedulesJsonFromPrefs != null) {
       List<dynamic> decoded = json.decode(schedulesJsonFromPrefs);
-      schedules = List<Map<String, String>>.from(decoded.map((x) => Map<String, String>.from(x)));
+      schedules = List<Map<String, String>>.from(
+          decoded.map((x) => Map<String, String>.from(x)));
     }
     notifyListeners();
   }
