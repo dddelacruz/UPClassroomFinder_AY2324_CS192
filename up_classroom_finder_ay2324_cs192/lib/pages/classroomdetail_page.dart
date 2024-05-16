@@ -27,7 +27,7 @@ class ClassroomDetailPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width - 80,
+                          width: MediaQuery.of(context).size.width - 100,
                           child: Text(
                             upclassroom['NAME'],
                             style: const TextStyle(
